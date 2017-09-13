@@ -72,7 +72,7 @@ public class Server implements Runnable {
 		} catch (IOException e) {
 			LOGGER.equals("Could not get a server socket. Server will not start");
 			LOGGER.error(e.toString(), e);
-			run = false;
+			stop();
 		}
 
 		while (run) {

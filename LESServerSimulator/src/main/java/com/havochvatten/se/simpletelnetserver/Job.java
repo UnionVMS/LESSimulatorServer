@@ -14,8 +14,7 @@ public class Job implements Runnable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Job.class);
 	
-	private boolean loop = true;
-
+	private Socket socket = null;
 	private Server server = null;
 
 	public Server getServer() {
@@ -26,7 +25,6 @@ public class Job implements Runnable {
 		return socket;
 	}
 
-	private Socket socket = null;
 
 	public Job(final Socket socket, final Server server) {
 		this.socket = socket;
@@ -47,7 +45,7 @@ public class Job implements Runnable {
 		}
 
 		try {
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
 		} catch (IOException e) {
 			LOGGER.error(e.toString(), e);
 			return;

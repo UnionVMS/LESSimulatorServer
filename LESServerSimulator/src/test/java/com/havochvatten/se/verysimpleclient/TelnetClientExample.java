@@ -61,7 +61,9 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler 
 
 				reader.start();
 				OutputStream outstr = tc.getOutputStream();
+				outstr.flush();
 				byte[] buff = new byte[1024];
+				
 				int ret_read = 0;
 
 				do {
