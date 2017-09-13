@@ -1,6 +1,7 @@
 package com.havochvatten.se.telnetclient;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public final class Les {
 
@@ -31,36 +32,36 @@ public final class Les {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
 	public void test() {
 		try (TelnetSession c = new TelnetSession(host, port)) {
-			
-			c.println("hi thomas");
-			c.waitFor(">");
-			
-			
-			c.println("quit");
-			c.waitFor(">");
+			c.waitFor("name:");
+			c.println(username);
+			c.waitFor("word");
+			c.println(password);
+			String response = c.response();
+			if (!response.equals("> ")) {
+				System.out.println(response);
+				return;
+			}
+			System.out.println(response);
 
-			
-			
-			
+			c.println("hi thomas");
+			System.out.println(c.response());
+
+			c.println("quit");
+			c.waitFor("bye");
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	
-	
-	
 	public static void main(String[] args) {
-		
-		Les les = new Les("localhost", 8585, "uid","pwd");
-		
+
+		Les les = new Les("localhost", 8585, "DonaldDuck", "password155");
+
 		les.test();
-		
-		
+
 	}
 
 }

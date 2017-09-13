@@ -8,34 +8,55 @@ import java.io.PrintStream;
 import java.io.Reader;
 
 final class TelnetConversation {
-    private static final String crlf = "\r\n";
-    private final Reader r;
-    private final PrintStream out;
-    private final StringBuilder s = new StringBuilder();
+	private static final String crlf = "\r\n";
+	private final Reader reader;
+	private final PrintStream out;
+	private final InputStream is;
 
-    TelnetConversation(InputStream is, OutputStream os) {
-        this.r = new InputStreamReader(is);
-        this.out = new PrintStream(os);
-    }
+	TelnetConversation(InputStream is, OutputStream os) {
+		this.is = is;
+		this.reader = new InputStreamReader(is);
+		this.out = new PrintStream(os);
+	}
 
-    void println(String s) {
-        out.print(s);
-        out.print(crlf);
-        out.flush();
-    }
+	void println(String s) {
+		out.print(s);
+		out.print(crlf);
+		out.flush();
+	}
 
-    void waitFor(String value) {
-        char ch;
-        try {
-            while ((ch = (char) r.read()) != -1) {
-                s.append(ch);
-                System.out.print(ch);
-                if (s.toString().endsWith(value))
-                    return;
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	void waitFor(String value) {
+		StringBuilder sb = new StringBuilder();
+		char ch;
+		try {
+			while ((ch = (char) reader.read()) != -1) {
+				sb.append(ch);
+				if (sb.toString().endsWith(value))
+					return;
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public String response() {
+
+		try {
+			byte[] buff = new byte[1024];
+			int ret_read = 0;
+
+			do {
+				ret_read = is.read(buff);
+				if (ret_read > 0) {
+					return new String(buff, 0, ret_read);
+				}
+			} while (ret_read >= 0);
+		} catch (IOException e) {
+			System.err.println("Exception while reading socket:" + e.getMessage());
+		}
+
+		return "";
+
+	}
 
 }

@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 public class Job implements Runnable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Job.class);
-	
+
 	private Socket socket = null;
 	private Server server = null;
 
@@ -24,7 +24,6 @@ public class Job implements Runnable {
 	public Socket getSocket() {
 		return socket;
 	}
-
 
 	public Job(final Socket socket, final Server server) {
 		this.socket = socket;
@@ -45,7 +44,7 @@ public class Job implements Runnable {
 		}
 
 		try {
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream(),"UTF-8"));
+			in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 		} catch (IOException e) {
 			LOGGER.error(e.toString(), e);
 			return;
@@ -54,18 +53,13 @@ public class Job implements Runnable {
 		Response response = new Response();
 		try {
 			while ((line = in.readLine()) != null) {
-
 				if (line == null || line.length() == 0) {
 					response.set(Command.ERROR);
 				} else {
-
 					StringTokenizer st = new StringTokenizer(line);
 					String command = st.nextToken();
-
 					String[] arguments = null;
-
 					if (this.getServer().getCommands().containsKey(command)) {
-
 						if (st.countTokens() >= 1) {
 							arguments = new String[st.countTokens()];
 							int argc = 0;
@@ -74,25 +68,20 @@ public class Job implements Runnable {
 							}
 						}
 						Command commandHandler = this.getServer().getCommands().get(command);
-
 						response = commandHandler.handle(arguments);
-
 					} else {
-						// not a supprted command
 						response.set(Command.ERROR);
 					}
 				}
-
 				out.print(response);
 				out.print(Command.END);
 				out.flush();
-
 				if (response.keepalive() == false) {
 					break;
 				}
 			}
-		} catch (IOException e1) {
-			LOGGER.info(e1.toString(), e1);
+		} catch (IOException e) {
+			LOGGER.info(e.toString(), e);
 		}
 
 		try {

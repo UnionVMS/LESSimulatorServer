@@ -10,19 +10,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Server implements Runnable {
-	
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
 
-	
 	private int port;
 	private InetAddress bind = null;
 	private ServerSocket socket = null;
 	private int timeout = 0;
 	private int backlog = 0;
 
-	private static Thread t = null;
-	private static boolean run = true;
+	private static Thread serverThread = null;
+	private static boolean loop = true;
 
 	public int getBacklog() {
 		return backlog;
@@ -63,6 +61,12 @@ public class Server implements Runnable {
 		return commands;
 	}
 
+	private boolean autenticate(String user, String pwd) {
+
+		return true;
+
+	}
+
 	// @Override
 	public void run() {
 
@@ -75,25 +79,42 @@ public class Server implements Runnable {
 			stop();
 		}
 
-		while (run) {
+		while (loop) {
 			try {
 				Socket clientSocket = socket.accept();
-				Thread t = new Thread(new Job(clientSocket, this));
-				t.start();
+
+				// logon before job starts
+				byte nameBuffer[] = new byte[1024];
+				byte pwdBuffer[] = new byte[1024];
+				clientSocket.getOutputStream().write("name:".getBytes("UTF-8"));
+				clientSocket.getInputStream().read(nameBuffer);
+				clientSocket.getOutputStream().write("word:".getBytes("UTF-8"));
+				clientSocket.getInputStream().read(pwdBuffer);
+
+				String user = new String(nameBuffer, "UTF-8");
+				String pwd = new String(pwdBuffer, "UTF-8");
+
+				if (autenticate(user, pwd)) {
+					clientSocket.getOutputStream().write("> ".getBytes("UTF-8"));
+					Thread jobThread = new Thread(new Job(clientSocket, this));
+					jobThread.start();
+				}else{
+					LOGGER.info("User is not authenticated > ");
+					clientSocket.getOutputStream().write("User is not authenticated".getBytes("UTF-8"));
+				}
 			} catch (IOException e) {
 				LOGGER.error(e.toString(), e);
 			}
 		}
-
 	}
 
 	public void start() {
-		t = new Thread(this);
-		t.start();
+		serverThread = new Thread(this);
+		serverThread.start();
 	}
 
 	public void stop() {
-		run = false;
+		loop = false;
 	}
 
 }
