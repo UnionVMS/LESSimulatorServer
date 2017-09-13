@@ -33,7 +33,7 @@ public class Main {
 
 			@Override
 			public Response handle(String[] arguments) {
-				return new Response("see you...", false /* halt */);
+				return new Response("quit", false);
 			}
 
 		});

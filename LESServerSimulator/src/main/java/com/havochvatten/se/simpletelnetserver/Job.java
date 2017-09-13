@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 public class Job implements Runnable {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Job.class);
+	
+	private boolean loop = true;
 
 	private Server server = null;
 
@@ -46,58 +48,53 @@ public class Job implements Runnable {
 
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			line = in.readLine();
 		} catch (IOException e) {
 			LOGGER.error(e.toString(), e);
 			return;
 		}
 
 		Response response = new Response();
+		try {
+			while ((line = in.readLine()) != null) {
 
-		while (line != null) {
-
-			if (line == null || line.length() == 0) {
-				response.set(Command.ERROR);
-			} else {
-
-				StringTokenizer st = new StringTokenizer(line);
-				String command = st.nextToken();
-
-				String[] arguments = null;
-
-				if (this.getServer().getCommands().containsKey(command)) {
-
-					if (st.countTokens() >= 1) {
-						arguments = new String[st.countTokens()];
-						int argc = 0;
-						while (st.hasMoreTokens()) {
-							arguments[argc++] = st.nextToken();
-						}
-					}
-					Command commandHandler = this.getServer().getCommands().get(command);
-
-					response = commandHandler.handle(arguments);
-					
-				} else {
+				if (line == null || line.length() == 0) {
 					response.set(Command.ERROR);
+				} else {
+
+					StringTokenizer st = new StringTokenizer(line);
+					String command = st.nextToken();
+
+					String[] arguments = null;
+
+					if (this.getServer().getCommands().containsKey(command)) {
+
+						if (st.countTokens() >= 1) {
+							arguments = new String[st.countTokens()];
+							int argc = 0;
+							while (st.hasMoreTokens()) {
+								arguments[argc++] = st.nextToken();
+							}
+						}
+						Command commandHandler = this.getServer().getCommands().get(command);
+
+						response = commandHandler.handle(arguments);
+
+					} else {
+						// not a supprted command
+						response.set(Command.ERROR);
+					}
 				}
 
+				out.print(response);
+				out.print(Command.END);
+				out.flush();
+
+				if (response.keepalive() == false) {
+					break;
+				}
 			}
-
-			out.print(response);
-			out.print(Command.END);
-			out.flush();
-
-			if (response.keepalive() == false) {
-				break;
-			}
-
-			try {
-				line = in.readLine();
-			} catch (IOException e) {
-				LOGGER.info(e.toString(), e);
-			}
-
+		} catch (IOException e1) {
+			LOGGER.info(e1.toString(), e1);
 		}
 
 		try {
