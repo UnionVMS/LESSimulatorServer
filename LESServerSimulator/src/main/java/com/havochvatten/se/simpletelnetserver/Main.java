@@ -1,5 +1,7 @@
 package com.havochvatten.se.simpletelnetserver;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +21,9 @@ public class Main {
 		server.registerCommand(new Command("hi") {
 
 			@Override
-			public Response handle(String[] arguments) {
-				if(arguments == null) return new Response("command hi : no arguments");
-				if (arguments.length > 0)
-					return new Response("hi " + arguments[0] + " really nice to meet you!");
+			public Response handle(List<String> arguments) {
+				if (arguments.size() > 0)
+					return new Response("hi " + arguments.toString() + " really nice to meet you!");
 				else
 					return new Response("this is the " + this.getName() + " command");
 			}
@@ -32,7 +33,7 @@ public class Main {
 		server.registerCommand(new Command("quit") {
 
 			@Override
-			public Response handle(String[] arguments) {
+			public Response handle(List<String>  arguments) {
 				return new Response("bye", false);
 			}
 
@@ -41,8 +42,7 @@ public class Main {
 		server.registerCommand(new Command("AYT") {
 
 			@Override
-			public Response handle(String[] arguments) {
-				if(arguments == null) return new Response("command AYT : no arguments");
+			public Response handle(List<String>  arguments) {
 				return new Response("AYT on server ");
 			}
 

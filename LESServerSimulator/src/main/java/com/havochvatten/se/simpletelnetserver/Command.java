@@ -1,5 +1,7 @@
 package com.havochvatten.se.simpletelnetserver;
 
+import java.util.List;
+
 public abstract class Command {
 
 	public static final String END = "\r\n";
@@ -15,6 +17,6 @@ public abstract class Command {
 		return this.cmd;
 	}
 
-	public abstract Response handle(String[] arguments);
+	public abstract Response handle(List<String> arguments);
 
 }

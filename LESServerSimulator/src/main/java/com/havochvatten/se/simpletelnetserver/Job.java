@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.slf4j.Logger;
@@ -58,15 +60,15 @@ public class Job implements Runnable {
 				} else {
 					StringTokenizer st = new StringTokenizer(line);
 					String command = st.nextToken();
-					String[] arguments = null;
 					if (this.getServer().getCommands().containsKey(command)) {
-						if (st.countTokens() >= 1) {
-							arguments = new String[st.countTokens()];
+						int n = st.countTokens();
+						List<String> arguments = new ArrayList<>();
+						if (n >= 1) {
 							int argc = 0;
 							while (st.hasMoreTokens()) {
-								arguments[argc++] = st.nextToken();
+								arguments.add(st.nextToken());
 							}
-						}
+						} 
 						Command commandHandler = this.getServer().getCommands().get(command);
 						response = commandHandler.handle(arguments);
 					} else {
