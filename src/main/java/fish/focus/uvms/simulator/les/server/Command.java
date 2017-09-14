@@ -1,4 +1,4 @@
-package fish.focus.uvms.simulator.les;
+package fish.focus.uvms.simulator.les.server;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package fish.focus.uvms.simulator.les;
+package fish.focus.uvms.simulator.les.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -64,7 +64,6 @@ public class Job implements Runnable {
 						int n = st.countTokens();
 						List<String> arguments = new ArrayList<>();
 						if (n >= 1) {
-							int argc = 0;
 							while (st.hasMoreTokens()) {
 								arguments.add(st.nextToken());
 							}
