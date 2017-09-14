@@ -101,11 +101,11 @@ public class Server implements Runnable {
 				String pwd = new String(pwdBuffer, "UTF-8");
 
 				if (autenticate(user, pwd)) {
-					clientSocket.getOutputStream().write("> ".getBytes("UTF-8"));
+					clientSocket.getOutputStream().write(">".getBytes("UTF-8"));
 					Thread jobThread = new Thread(new Job(clientSocket, this));
 					jobThread.start();
 				}else{
-					LOGGER.info("User is not authenticated > ");
+					LOGGER.info("User is not authenticated >");
 					clientSocket.getOutputStream().write("User is not authenticated".getBytes("UTF-8"));
 				}
 			} catch (IOException e) {

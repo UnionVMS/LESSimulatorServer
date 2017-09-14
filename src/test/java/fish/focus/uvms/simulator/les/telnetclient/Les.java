@@ -24,16 +24,21 @@ public final class Les {
 			c.waitFor("word");
 			c.println(password);
 			String response = c.response();
-			if (!response.equals("> ")) {
+			if (!response.equals(">")) {
 				// logon failed
 				System.out.println(response);
 				return;
 			}
 			System.out.println(response);
 
-			c.println("hi sture  andersson");
+			c.println("DNID parameters_here");
 			System.out.println(c.response());
 
+			c.println("POLL parameters_here");
+			System.out.println(c.response());
+			
+			
+			
 			c.println("quit");
 			c.waitFor("bye");
 		} catch (IOException e) {

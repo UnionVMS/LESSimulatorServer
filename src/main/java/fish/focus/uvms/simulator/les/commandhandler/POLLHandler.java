@@ -17,7 +17,7 @@ public class POLLHandler {
 	}
 	
 	public Response execute(){
-		return new Response();
+		return new Response("POLL >");
 	}
 
 }

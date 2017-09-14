@@ -60,6 +60,7 @@ public class Job implements Runnable {
 				} else {
 					StringTokenizer st = new StringTokenizer(line);
 					String command = st.nextToken();
+					command = command.toLowerCase();
 					if (this.getServer().getCommands().containsKey(command)) {
 						int n = st.countTokens();
 						List<String> arguments = new ArrayList<>();
