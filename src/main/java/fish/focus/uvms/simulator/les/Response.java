@@ -1,4 +1,4 @@
-package com.havochvatten.se.simpletelnetserver;
+package fish.focus.uvms.simulator.les;
 
 public class Response {
 	private String response = null;

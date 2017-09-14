@@ -1,4 +1,4 @@
-package com.havochvatten.se.telnetclient;
+package fish.focus.uvms.simulator.les.telnetclient;
 
 import java.io.Closeable;
 import java.io.IOException;

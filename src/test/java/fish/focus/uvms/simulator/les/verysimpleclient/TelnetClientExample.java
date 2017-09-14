@@ -1,4 +1,4 @@
-package com.havochvatten.se.verysimpleclient;
+package fish.focus.uvms.simulator.les.verysimpleclient;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

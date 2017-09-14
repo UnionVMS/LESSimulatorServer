@@ -1,4 +1,4 @@
-package com.havochvatten.se.simpletelnetserver;
+package fish.focus.uvms.simulator.les;
 
 import java.io.BufferedReader;
 import java.io.IOException;
