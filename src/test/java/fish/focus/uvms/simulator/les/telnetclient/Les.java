@@ -43,7 +43,7 @@ public final class Les {
 
 	public static void main(String[] args) {
 
-		Les les = new Les("localhost", 8585, "DonaldDuck", "password155");
+		Les les = new Les("localhost", 8585, "donald", "duck");
 
 		les.test();
 

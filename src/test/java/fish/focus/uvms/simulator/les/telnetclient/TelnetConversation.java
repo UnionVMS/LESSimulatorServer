@@ -1,6 +1,5 @@
 package fish.focus.uvms.simulator.les.telnetclient;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;

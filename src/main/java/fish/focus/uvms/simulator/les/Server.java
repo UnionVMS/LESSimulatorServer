@@ -61,10 +61,16 @@ public class Server implements Runnable {
 		return commands;
 	}
 
+	// TODO make this correct later
 	private boolean autenticate(String user, String pwd) {
-
-		return true;
-
+		if((user == null) || (user.length() < 1)) return false;
+		if((pwd == null) || (pwd.length() < 1)) return false;
+		
+		String allowed_uid= Main.getSettings().getProperty("server.uid");
+		String allowed_pwd= Main.getSettings().getProperty("server.pwd");
+		if((allowed_uid == null) || (allowed_uid.length() < 1)) return false;
+		if((allowed_uid == null) || (allowed_uid.length() < 1)) return false;
+		return user.trim().equals(allowed_uid) && pwd.trim().equals(allowed_pwd);
 	}
 
 	// @Override
