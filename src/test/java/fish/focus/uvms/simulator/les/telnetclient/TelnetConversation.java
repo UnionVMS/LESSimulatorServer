@@ -1,5 +1,6 @@
 package fish.focus.uvms.simulator.les.telnetclient;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -42,7 +43,7 @@ final class TelnetConversation {
 	public String response() {
 
 		try {
-			byte[] buff = new byte[1024];
+			byte[] buff = new byte[2048];
 			int ret_read = 0;
 
 			do {
@@ -58,5 +59,6 @@ final class TelnetConversation {
 		return "";
 
 	}
+
 
 }
