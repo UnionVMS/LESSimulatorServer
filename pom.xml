@@ -32,15 +32,13 @@
             <version>3.6</version>
         </dependency>
     </dependencies>
+    
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.1.0</version>
-                <configuration>
-                    <!-- put your configurations here -->
-                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -54,6 +52,7 @@
                                     <mainClass>fish.focus.uvms.simulator.les.server.Main</mainClass>
                                 </transformer>
                             </transformers>
+                            <minimizeJar>true</minimizeJar>
                         </configuration>
                     </execution>
                 </executions>
