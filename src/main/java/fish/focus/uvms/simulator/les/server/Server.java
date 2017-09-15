@@ -97,23 +97,22 @@ public class Server implements Runnable {
 		while (loop) {
 			try {
 				Socket clientSocket = socket.accept();
-				
+
 				// before authenticated
 
 				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "UTF-8"));
 				out = clientSocket.getOutputStream();
 				// logon before job starts
 				out.write("name:".getBytes("UTF-8"));
-				String user = in.readLine();
+				String user = readLine(in);
 				out.write("word:".getBytes("UTF-8"));
-				String pwd = in.readLine();
+				String pwd = readLine(in);
 
-				
-				// authenticate 
-				
+				// authenticate
+
 				if (autenticate(user, pwd)) {
 					out.write(">".getBytes("UTF-8"));
-					Thread jobThread = new Thread(new Job(clientSocket, this));
+					Thread jobThread = new Thread(new Client(clientSocket, this));
 					jobThread.start();
 				} else {
 					LOGGER.info("User is not authenticated >");
@@ -124,6 +123,21 @@ public class Server implements Runnable {
 			} finally {
 			}
 		}
+	}
+
+	public String readLine(BufferedReader in) {
+
+		String line = null;
+		try {
+			while ((line = in.readLine()) != null) {
+				if (line.length() > 0) {
+					return line;
+				}
+			}
+		} catch (IOException e) {
+			return "";
+		}
+		return "";
 	}
 
 	public void start() {

@@ -12,9 +12,9 @@ import java.util.StringTokenizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Job implements Runnable {
+public class Client implements Runnable {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Job.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
 
 	private Socket socket = null;
 	private Server server = null;
@@ -27,7 +27,7 @@ public class Job implements Runnable {
 		return socket;
 	}
 
-	public Job(final Socket socket, final Server server) {
+	public Client(final Socket socket, final Server server) {
 		this.socket = socket;
 		this.server = server;
 	}
