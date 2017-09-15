@@ -2,22 +2,28 @@ package fish.focus.uvms.simulator.les.telnetclient;
 
 import java.io.IOException;
 
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 public final class Les {
 
-	private final String host;
-	private final int port;
-	private final String username;
-	private final String password;
+	private static String host;
+	private static int port;
+	private static String username;
+	private static String password;
 
-	public Les(String host, int port, String username, String password) {
-		this.host = host;
-		this.port = port;
-		this.username = username;
-		this.password = password;
+	@BeforeClass
+	public static void beforeClass() {
+
+		host = "localhost";
+		port = 8585;
+		username = "donald";
+		password = "duck";
+
 	}
 
-
-	public void test() {
+	@Test
+	public void testPoll() {
 		try (TelnetSession c = new TelnetSession(host, port)) {
 			c.waitFor("name:");
 			c.println(username);
@@ -29,16 +35,13 @@ public final class Les {
 				System.out.println(response);
 				return;
 			}
+
+			CommandPoll commandPoll = new CommandPoll();
+			// String reponse = commandPoll.sendPollCommand(poll, out, in,
+			// stream, url, port);
+
 			System.out.println(response);
 
-			c.println("DNID parameters_here");
-			System.out.println(c.response());
-
-			c.println("POLL parameters_here");
-			System.out.println(c.response());
-			
-			
-			
 			c.println("quit");
 			c.waitFor("bye");
 		} catch (IOException e) {
@@ -46,12 +49,30 @@ public final class Les {
 		}
 	}
 
-	public static void main(String[] args) {
+	@Test
+	public void testDNID() {
+		try (TelnetSession c = new TelnetSession(host, port)) {
+			c.waitFor("name:");
+			c.println(username);
+			c.waitFor("word");
+			c.println(password);
+			String response = c.response();
+			if (!response.equals(">")) {
+				// logon failed
+				System.out.println(response);
+			}
 
-		Les les = new Les("localhost", 8585, "donald", "duck");
+			CommandDownLoad commandDownload = new CommandDownLoad();
+			// String reponse = commandDownload.sendPollCommand(poll, out, in,
+			// stream, url, port);
 
-		les.test();
+			System.out.println(response);
 
+			c.println("quit");
+			c.waitFor("bye");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
