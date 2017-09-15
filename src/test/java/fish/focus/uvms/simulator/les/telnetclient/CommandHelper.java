@@ -18,32 +18,32 @@ public class CommandHelper {
 			throws TelnetException, IOException {
 		String[] faultPatterns = { "????????", "[Connection to 41424344 aborted: error status 0]",
 				"Illegal address parameter." };
-		StringBuffer sb = new StringBuffer();
-		byte[] contents = new byte[1024];
+		StringBuffer stringbuffer = new StringBuffer();
+		byte[] bytebuffer = new byte[1024];
 		int bytesRead = 0;
 		do {
-			bytesRead = in.read(contents);
+			bytesRead = in.read(bytebuffer);
 			if (bytesRead > 0) {
-				String s = new String(contents, 0, bytesRead);
-				sb.append(s);
+				String s = new String(bytebuffer, 0, bytesRead);
+				stringbuffer.append(s);
 				if (stream != null) {
-					stream.write(contents, 0, bytesRead);
+					stream.write(bytebuffer, 0, bytesRead);
 					stream.flush();
 				}
-				if (sb.toString().trim().endsWith(pattern)) {
-					return sb.toString();
+				if (stringbuffer.toString().trim().endsWith(pattern)) {
+					return stringbuffer.toString();
 				} else {
 					for (String faultPattern : faultPatterns) {
-						if (sb.toString().trim().contains(faultPattern)) {
+						if (stringbuffer.toString().trim().contains(faultPattern)) {
 							throw new TelnetException("Error while reading from Inmarsat-C LES Telnet @ " + url + ":"
-									+ port + ": " + sb.toString());
+									+ port + ": " + stringbuffer.toString());
 						}
 					}
 				}
 			}
 		} while (bytesRead >= 0);
 		throw new TelnetException(
-				"Unknown response from Inmarsat-C LES Telnet @ " + url + ":" + port + ": " + sb.toString());
+				"Unknown response from Inmarsat-C LES Telnet @ " + url + ":" + port + ": " + stringbuffer.toString());
 	}
 
 }
