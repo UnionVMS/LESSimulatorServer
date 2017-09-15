@@ -30,6 +30,16 @@ public class Main {
 		settings.load(is);
 	}
 
+	private static int resolvePort(String portStr) {
+		try {
+			return Integer.parseInt(portStr);
+		} catch (NumberFormatException nfe) {
+			LOGGER.error("Invalid port");
+			System.exit(-1);
+			throw nfe;
+		}
+	}
+
 	/**
 	 * @param args
 	 */
@@ -42,13 +52,41 @@ public class Main {
 			System.exit(-1);
 		}
 
-		String portStr = settings.getProperty("server.port");
+		String portFromPropertyFile = settings.getProperty("server.port");
+
+		String portFromCommandLine = null;
+		String dnidFromCommandLine = null;
+		if (args.length > 0) {
+
+			int numberOfArguments = args.length;
+			for (int i = 0; i < numberOfArguments; i++) {
+				String tmpArg = args[i];
+				if (tmpArg.indexOf("=") < 0) {
+					continue;
+				}
+				String[] buf = tmpArg.split("=");
+				if (buf.length > 2) {
+					continue;
+				}
+				String key = buf[0].trim().toLowerCase();
+				String val = buf[1].trim();
+
+				if (key.endsWith("port")) {
+					portFromCommandLine = val;
+				}
+				if (key.endsWith("dnid")) {
+					dnidFromCommandLine = val;
+					settings.put("dnid", dnidFromCommandLine);
+				}
+
+			}
+		}
+
 		int port = Integer.MIN_VALUE;
-		try {
-			port = Integer.parseInt(portStr);
-		} catch (NumberFormatException nfe) {
-			LOGGER.error("Invalid port.  Check settings.properties");
-			System.exit(-1);
+		if (portFromCommandLine != null) {
+			port = resolvePort(portFromCommandLine);
+		} else {
+			port = resolvePort(portFromPropertyFile);
 		}
 
 		Server server = new Server(port);
@@ -58,9 +96,9 @@ public class Main {
 			public Response handle(List<String> arguments) {
 				if (arguments.size() > 0) {
 					POLLHandler pollHandler = new POLLHandler(arguments);
-					if(pollHandler.verify()){
+					if (pollHandler.verify()) {
 						return pollHandler.execute();
-					}else{
+					} else {
 						return new Response("POLL request not OK >");
 					}
 				} else
@@ -74,9 +112,9 @@ public class Main {
 			public Response handle(List<String> arguments) {
 				if (arguments.size() > 0) {
 					DNIDHandler dnidHandler = new DNIDHandler(arguments);
-					if(dnidHandler.verify()){
+					if (dnidHandler.verify()) {
 						return dnidHandler.execute();
-					}else{
+					} else {
 						return new Response("DNID request not OK >");
 					}
 				} else
@@ -95,8 +133,8 @@ public class Main {
 		});
 
 		server.start();
-		System.out.println("Server running");
-		
+		String msg = "Server running. Listening on port: " + port + " and dnid: [" + settings.getProperty("dnid") + "]";
+		System.out.println(msg);
 
 	}
 
