@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -103,20 +104,20 @@ public class Server implements Runnable {
 				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "UTF-8"));
 				out = clientSocket.getOutputStream();
 				// logon before job starts
-				out.write("name:".getBytes("UTF-8"));
+				write(out, "name:");
 				String user = readLine(in);
-				out.write("word:".getBytes("UTF-8"));
+				write(out, "word:");
 				String pwd = readLine(in);
 
 				// authenticate
 
 				if (autenticate(user, pwd)) {
-					out.write(">".getBytes("UTF-8"));
+					write(out, ">");
 					Thread jobThread = new Thread(new Client(clientSocket, this));
 					jobThread.start();
 				} else {
 					LOGGER.info("User is not authenticated >");
-					out.write("User is not authenticated".getBytes("UTF-8"));
+					write(out, "User is not authenticated");
 				}
 			} catch (IOException e) {
 				LOGGER.error(e.toString(), e);
@@ -125,18 +126,18 @@ public class Server implements Runnable {
 		}
 	}
 
-	public String readLine(BufferedReader in) {
+	public void write(OutputStream out, String msg) throws UnsupportedEncodingException, IOException{
+		out.write(msg.getBytes("UTF-8"));		
+	}
+	
+	public String readLine(BufferedReader in) throws IOException {
 
 		String line = null;
-		try {
 			while ((line = in.readLine()) != null) {
 				if (line.length() > 0) {
 					return line;
 				}
 			}
-		} catch (IOException e) {
-			return "";
-		}
 		return "";
 	}
 

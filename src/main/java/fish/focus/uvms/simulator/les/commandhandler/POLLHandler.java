@@ -13,11 +13,12 @@ public class POLLHandler {
 	}
 	
 	public boolean verify(){
+		
 		return true;
 	}
 	
 	public Response execute(){
-		return new Response("POLL >");
+		return new Response(arguments.get(0) + " POLL >");
 	}
 
 }
