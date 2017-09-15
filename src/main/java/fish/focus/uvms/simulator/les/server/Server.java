@@ -22,6 +22,7 @@ public class Server implements Runnable {
 	private ServerSocket socket = null;
 	private int timeout = 0;
 	private int backlog = 0;
+	private int ALLOWED_TRIES;
 
 	private static Thread serverThread = null;
 	private static boolean loop = true;
@@ -47,10 +48,23 @@ public class Server implements Runnable {
 	public Server(int port, InetAddress bind) {
 		this.bind = bind;
 		this.port = port;
+		try {
+			String allowed_logontriesStr = Main.getSettings().getProperty("server.allowedlogontries");
+			ALLOWED_TRIES = Integer.parseInt(allowed_logontriesStr);
+		} catch (NumberFormatException e) {
+			ALLOWED_TRIES = 3;
+		}
+
 	}
 
 	public Server(int port) {
 		this.port = port;
+		try {
+			String allowed_logontriesStr = Main.getSettings().getProperty("server.allowedlogontries");
+			ALLOWED_TRIES = Integer.parseInt(allowed_logontriesStr);
+		} catch (NumberFormatException e) {
+			ALLOWED_TRIES = 3;
+		}
 	}
 
 	public void registerCommand(String command, Command handler) {
@@ -103,21 +117,28 @@ public class Server implements Runnable {
 
 				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "UTF-8"));
 				out = clientSocket.getOutputStream();
-				// logon before job starts
-				write(out, "name:");
-				String user = readLine(in);
-				write(out, "word:");
-				String pwd = readLine(in);
 
-				// authenticate
+				int logonTries = 0;
+				boolean isAuthenticated = false;
+				while (!isAuthenticated && logonTries < ALLOWED_TRIES) {
+					logonTries++;
+					write(out, "name:");
+					String user = readLine(in);
+					write(out, "word:");
+					String pwd = readLine(in);
+					isAuthenticated = autenticate(user, pwd);
+				}
 
-				if (autenticate(user, pwd)) {
+				if (isAuthenticated) {
 					write(out, ">");
 					Thread jobThread = new Thread(new Client(clientSocket, this));
 					jobThread.start();
 				} else {
 					LOGGER.info("User is not authenticated >");
 					write(out, "User is not authenticated");
+					if (logonTries >= ALLOWED_TRIES) {
+						write(out, "logon tries limit reached");
+					}
 				}
 			} catch (IOException e) {
 				LOGGER.error(e.toString(), e);
@@ -126,18 +147,18 @@ public class Server implements Runnable {
 		}
 	}
 
-	public void write(OutputStream out, String msg) throws UnsupportedEncodingException, IOException{
-		out.write(msg.getBytes("UTF-8"));		
+	public void write(OutputStream out, String msg) throws UnsupportedEncodingException, IOException {
+		out.write(msg.getBytes("UTF-8"));
 	}
-	
+
 	public String readLine(BufferedReader in) throws IOException {
 
 		String line = null;
-			while ((line = in.readLine()) != null) {
-				if (line.length() > 0) {
-					return line;
-				}
+		while ((line = in.readLine()) != null) {
+			if (line.length() > 0) {
+				return line;
 			}
+		}
 		return "";
 	}
 
