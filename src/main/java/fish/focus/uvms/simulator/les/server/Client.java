@@ -72,7 +72,7 @@ public class Client implements Runnable {
 						Command commandHandler = this.getServer().getCommands().get(command);
 						response = commandHandler.handle(arguments);
 					} else {
-						response.set(Command.ERROR);
+						response.set(Command.UNKNOWN);
 					}
 				}
 				out.print(response);

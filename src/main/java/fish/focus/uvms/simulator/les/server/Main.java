@@ -61,10 +61,10 @@ public class Main {
 					if(pollHandler.verify()){
 						return pollHandler.execute();
 					}else{
-						return new Response("POLL request not OK ", false);
+						return new Response("POLL request not OK >");
 					}
 				} else
-					return new Response("No arguments passed in POLL command >", false);
+					return new Response("No arguments passed in POLL command >");
 			}
 
 		});
@@ -77,10 +77,10 @@ public class Main {
 					if(dnidHandler.verify()){
 						return dnidHandler.execute();
 					}else{
-						return new Response("DNID request not OK ", false);
+						return new Response("DNID request not OK >");
 					}
 				} else
-					return new Response("No arguments passed in DNID command >", false);
+					return new Response("No arguments passed in DNID command >");
 			}
 
 		});
@@ -90,15 +90,6 @@ public class Main {
 			@Override
 			public Response handle(List<String> arguments) {
 				return new Response("bye", false);
-			}
-
-		});
-
-		server.registerCommand(new Command("AYT") {
-
-			@Override
-			public Response handle(List<String> arguments) {
-				return new Response("AYT on server");
 			}
 
 		});
