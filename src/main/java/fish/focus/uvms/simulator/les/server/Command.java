@@ -2,6 +2,9 @@ package fish.focus.uvms.simulator.les.server;
 
 import java.util.List;
 
+/** base class for command handlers just implement handle
+ *
+ */
 public abstract class Command {
 
 	public static final String END = "\r\n";

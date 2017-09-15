@@ -15,21 +15,41 @@ public class Main {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-	private static Properties settings = new Properties();
-
-	public static Properties getSettings() {
-		return settings;
+	/**
+	 * accessible from all modules that needs it OBS reads from file since it is
+	 * immutable
+	 * 
+	 * @return Settings.properties
+	 * @throws IOException
+	 */
+	public static Properties getSettings() throws IOException {
+		return loadProperties();
 	}
 
-	private static void loadProperties() throws IOException {
+	/**
+	 * Load properties file from classpath
+	 * 
+	 * @throws IOException
+	 */
+	private static Properties loadProperties() throws IOException {
 
+		Properties properties = new Properties();
 		InputStream is = Main.class.getClassLoader().getResourceAsStream("settings.properties");
 		if (is == null) {
 			throw new IOException();
 		}
-		settings.load(is);
+		properties.load(is);
+		is.close();
+
+		return properties;
 	}
 
+	/**
+	 * Resolve port if not valid terminates immediately
+	 * 
+	 * @param portStr
+	 * @return port
+	 */
 	private static int resolvePort(String portStr) {
 		try {
 			return Integer.parseInt(portStr);
@@ -42,11 +62,13 @@ public class Main {
 
 	/**
 	 * @param args
+	 * @throws IOException
 	 */
 	public static void main(String[] args) {
 
+		Properties settings = null;
 		try {
-			loadProperties();
+			settings = loadProperties();
 		} catch (IOException e) {
 			LOGGER.error("settings.properties not found. cannot start");
 			System.exit(-1);
@@ -89,7 +111,16 @@ public class Main {
 			port = resolvePort(portFromPropertyFile);
 		}
 
-		Server server = new Server(port);
+		Server server = null;
+		try {
+			server = new Server(port);
+
+		} catch (IOException e) {
+			LOGGER.error("Could not create server. cannot start");
+			System.exit(-1);
+		}
+
+		// ADD handlers when needed
 
 		server.registerCommand(new Command("POLL") {
 			@Override

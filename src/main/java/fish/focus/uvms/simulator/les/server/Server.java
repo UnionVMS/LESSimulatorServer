@@ -45,7 +45,7 @@ public class Server implements Runnable {
 
 	private HashMap<String, Command> commands = new HashMap<String, Command>();
 
-	public Server(int port, InetAddress bind) {
+	public Server(int port, InetAddress bind) throws IOException {
 		this.bind = bind;
 		this.port = port;
 		try {
@@ -57,7 +57,7 @@ public class Server implements Runnable {
 
 	}
 
-	public Server(int port) {
+	public Server(int port) throws IOException {
 		this.port = port;
 		try {
 			String allowed_logontriesStr = Main.getSettings().getProperty("server.allowedlogontries");
@@ -80,7 +80,7 @@ public class Server implements Runnable {
 	}
 
 	// TODO make this correct later
-	private boolean autenticate(String user, String pwd) {
+	private boolean autenticate(String user, String pwd) throws IOException {
 		if ((user == null) || (user.length() < 1))
 			return false;
 		if ((pwd == null) || (pwd.length() < 1))
