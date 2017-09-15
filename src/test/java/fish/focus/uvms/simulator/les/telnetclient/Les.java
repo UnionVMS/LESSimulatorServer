@@ -1,9 +1,19 @@
 package fish.focus.uvms.simulator.les.telnetclient;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.UUID;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollType;
+import fish.focus.uvms.simulator.les.TelnetException;
 
 public final class Les {
 
@@ -19,11 +29,12 @@ public final class Les {
 		port = 8585;
 		username = "donald";
 		password = "duck";
+		new File("downloads/").mkdirs();
 
 	}
 
 	@Test
-	public void testPoll() {
+	public void testPoll() throws TelnetException {
 		try (TelnetSession c = new TelnetSession(host, port)) {
 			c.waitFor("name:");
 			c.println(username);
@@ -37,8 +48,19 @@ public final class Les {
 			}
 
 			CommandPoll commandPoll = new CommandPoll();
-			// String reponse = commandPoll.sendPollCommand(poll, out, in,
-			// stream, url, port);
+
+			PollType poll = new PollType();
+
+			InputStream in = c.getInputStream();
+			PrintStream out = new PrintStream(c.getOutputStream());
+
+			long s = System.currentTimeMillis();
+			File resultFile = new File("downloads/" + s + "_POLL.fil");
+			FileOutputStream stream = new FileOutputStream(resultFile);
+
+			String rs = commandPoll.sendPollCommand(poll, out, in, stream, host, String.valueOf(port));
+			
+			stream.close();
 
 			System.out.println(response);
 
@@ -50,7 +72,7 @@ public final class Les {
 	}
 
 	@Test
-	public void testDNID() {
+	public void testDNID() throws TelnetException {
 		try (TelnetSession c = new TelnetSession(host, port)) {
 			c.waitFor("name:");
 			c.println(username);
@@ -58,15 +80,24 @@ public final class Les {
 			c.println(password);
 			String response = c.response();
 			if (!response.equals(">")) {
-				// logon failed
 				System.out.println(response);
 			}
 
 			CommandDownLoad commandDownload = new CommandDownLoad();
-			// String reponse = commandDownload.sendPollCommand(poll, out, in,
-			// stream, url, port);
+			
+			String dnid = "1234";
+
+			
+			InputStream in = c.getInputStream();
+			PrintStream out = new PrintStream(c.getOutputStream());
+			long s = System.currentTimeMillis();
+			File resultFile = new File("downloads/" + s + "_" +  dnid   + "_DNID.fil");
+			FileOutputStream stream = new FileOutputStream(resultFile);
+			
+			String reponse = commandDownload.sendDownloadCommand(out, in, stream, dnid,  host,  String.valueOf(port));
 
 			System.out.println(response);
+			stream.close();
 
 			c.println("quit");
 			c.waitFor("bye");
