@@ -55,12 +55,16 @@ public final class Les {
 			PrintStream out = new PrintStream(c.getOutputStream());
 
 			long s = System.currentTimeMillis();
-			File resultFile = new File("downloads/" + s + "_POLL.fil");
+			String fileName = "downloads/" + s + "_POLL.fil";
+			File resultFile = new File(fileName);
 			FileOutputStream stream = new FileOutputStream(resultFile);
 
 			String rs = commandPoll.sendPollCommand(poll, out, in, stream, host, String.valueOf(port));
-			
-			stream.close();
+
+			if (stream != null) {
+				stream.flush();
+				stream.close();
+			}
 
 			System.out.println(response);
 
@@ -84,20 +88,22 @@ public final class Les {
 			}
 
 			CommandDownLoad commandDownload = new CommandDownLoad();
-			
+
 			String dnid = "1234";
 
-			
 			InputStream in = c.getInputStream();
 			PrintStream out = new PrintStream(c.getOutputStream());
 			long s = System.currentTimeMillis();
-			File resultFile = new File("downloads/" + s + "_" +  dnid   + "_DNID.fil");
+			File resultFile = new File("downloads/" + s + "_" + dnid + "_DNID.fil");
 			FileOutputStream stream = new FileOutputStream(resultFile);
-			
-			String reponse = commandDownload.sendDownloadCommand(out, in, stream, dnid,  host,  String.valueOf(port));
+
+			String reponse = commandDownload.sendDownloadCommand(out, in, stream, dnid, host, String.valueOf(port));
 
 			System.out.println(response);
-			stream.close();
+			if (stream != null) {
+				stream.flush();
+				stream.close();
+			}
 
 			c.println("quit");
 			c.waitFor("bye");
