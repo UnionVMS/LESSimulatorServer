@@ -104,6 +104,8 @@ public class Main {
 		});
 
 		server.start();
+		
+		System.out.println("Simulation Server Started");
 
 	}
 

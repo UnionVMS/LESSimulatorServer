@@ -1,6 +1,9 @@
 package fish.focus.uvms.simulator.les.server;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -63,13 +66,17 @@ public class Server implements Runnable {
 
 	// TODO make this correct later
 	private boolean autenticate(String user, String pwd) {
-		if((user == null) || (user.length() < 1)) return false;
-		if((pwd == null) || (pwd.length() < 1)) return false;
-		
-		String allowed_uid= Main.getSettings().getProperty("server.uid");
-		String allowed_pwd= Main.getSettings().getProperty("server.pwd");
-		if((allowed_uid == null) || (allowed_uid.length() < 1)) return false;
-		if((allowed_uid == null) || (allowed_uid.length() < 1)) return false;
+		if ((user == null) || (user.length() < 1))
+			return false;
+		if ((pwd == null) || (pwd.length() < 1))
+			return false;
+
+		String allowed_uid = Main.getSettings().getProperty("server.uid");
+		String allowed_pwd = Main.getSettings().getProperty("server.pwd");
+		if ((allowed_uid == null) || (allowed_uid.length() < 1))
+			return false;
+		if ((allowed_uid == null) || (allowed_uid.length() < 1))
+			return false;
 		return user.trim().equals(allowed_uid) && pwd.trim().equals(allowed_pwd);
 	}
 
@@ -85,31 +92,36 @@ public class Server implements Runnable {
 			stop();
 		}
 
+		BufferedReader in = null;
+		OutputStream out = null;
 		while (loop) {
 			try {
 				Socket clientSocket = socket.accept();
+				
+				// before authenticated
 
+				in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), "UTF-8"));
+				out = clientSocket.getOutputStream();
 				// logon before job starts
-				byte nameBuffer[] = new byte[1024];
-				byte pwdBuffer[] = new byte[1024];
-				clientSocket.getOutputStream().write("name:".getBytes("UTF-8"));
-				clientSocket.getInputStream().read(nameBuffer);
-				clientSocket.getOutputStream().write("word:".getBytes("UTF-8"));
-				clientSocket.getInputStream().read(pwdBuffer);
+				out.write("name:".getBytes("UTF-8"));
+				String user = in.readLine();
+				out.write("word:".getBytes("UTF-8"));
+				String pwd = in.readLine();
 
-				String user = new String(nameBuffer, "UTF-8");
-				String pwd = new String(pwdBuffer, "UTF-8");
-
+				
+				// authenticate 
+				
 				if (autenticate(user, pwd)) {
-					clientSocket.getOutputStream().write(">".getBytes("UTF-8"));
+					out.write(">".getBytes("UTF-8"));
 					Thread jobThread = new Thread(new Job(clientSocket, this));
 					jobThread.start();
-				}else{
+				} else {
 					LOGGER.info("User is not authenticated >");
-					clientSocket.getOutputStream().write("User is not authenticated".getBytes("UTF-8"));
+					out.write("User is not authenticated".getBytes("UTF-8"));
 				}
 			} catch (IOException e) {
 				LOGGER.error(e.toString(), e);
+			} finally {
 			}
 		}
 	}
