@@ -2,8 +2,11 @@ package fish.focus.uvms.simulator.les.commandhandler;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +32,10 @@ public class DNIDHandler {
 	}
 
 	private boolean parseArguments() {
-		
+
 		String arg = "";
-		for(String tmp : arguments){
-			if(tmp.equalsIgnoreCase("dnid")){
+		for (String tmp : arguments) {
+			if (tmp.equalsIgnoreCase("dnid")) {
 				continue;
 			}
 			arg += tmp.trim();
@@ -66,7 +69,7 @@ public class DNIDHandler {
 			LOGGER.error("arguments not ok . Check your call");
 			return false;
 		}
-				
+
 		try {
 			dnidRoot = Main.getSettings().getProperty("dnidroot");
 		} catch (IOException e) {
@@ -89,14 +92,19 @@ public class DNIDHandler {
 		File folder = new File(dnidRoot);
 
 		File[] dnidFiles = folder.listFiles();
+
+		// for every file in the catalog
+
 		for (File file : dnidFiles) {
 
 			String fileName = file.getAbsolutePath();
-
+			// put the file in a list
 			List<String> theFile = new ArrayList<>();
 			BufferedReader br = null;
 			try {
-				br = new BufferedReader(new FileReader(fileName));
+				
+				br = new BufferedReader(new InputStreamReader(
+					    new FileInputStream(fileName), "UTF-8"));
 				String currentLine;
 				while ((currentLine = br.readLine()) != null) {
 					theFile.add(currentLine);
@@ -109,6 +117,21 @@ public class DNIDHandler {
 				} catch (IOException e) {
 				}
 			}
+			// and close the stream
+
+			/*
+			try {
+				byte[] data = Files.readAllBytes(file.toPath());
+				System.out.println();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			*/
+			
+			
+
+			// at least 3 lines header data 1 . . . . n and end line
 			if (theFile.size() < 3)
 				continue;
 
@@ -118,6 +141,8 @@ public class DNIDHandler {
 
 			boolean firstLine = true;
 			for (String lineInFile : theFile) {
+
+				// first line take out the dnid and area from the file
 				if (firstLine) {
 					String line1 = lineInFile;
 					String parts[] = line1.split(" ");
@@ -135,21 +160,21 @@ public class DNIDHandler {
 					firstLine = false;
 					continue;
 				}
-				// lastLine
+				// check if line with human crap readable stuff
 				if (lineInFile.startsWith("Retrieving")) {
 					continue;
 				}
+				// check if last line lastLine
 				if (lineInFile.startsWith(">")) {
 					break;
 				}
 
 				// TODO: enhance with area as well ???
+				// if the file dnid is what we want take it
 				if (dnid.toLowerCase().trim().equals(dnidInFile.toLowerCase().trim())) {
 					returnValues += lineInFile;
-					returnValues += END;
 				}
 			}
-
 		}
 		return new Response(returnValues);
 

@@ -13,15 +13,13 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import fish.focus.uvms.simulator.les.commandhandler.DNIDHandler;
 import fish.focus.uvms.simulator.les.commandhandler.POLLHandler;
 
 public class Main {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	// private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
 	private static Properties settings;
 	private static Object lock = new Object();
@@ -69,7 +67,7 @@ public class Main {
 		try {
 			return Integer.parseInt(portStr);
 		} catch (NumberFormatException nfe) {
-			LOGGER.error("Invalid port");
+			nfe.printStackTrace();
 			System.exit(-1);
 			throw nfe;
 		}
@@ -84,7 +82,7 @@ public class Main {
 		try {
 			loadProperties();
 		} catch (IOException e) {
-			LOGGER.error("settings.properties not found. cannot start");
+			e.printStackTrace();
 			System.exit(-1);
 		}
 
@@ -125,7 +123,8 @@ public class Main {
 			}
 
 		} catch (ParseException exp) {
-			LOGGER.error("Unexpected exception:", exp);
+			exp.printStackTrace();
+			System.exit(-1);
 			return;
 		}
 
@@ -141,7 +140,7 @@ public class Main {
 			server = new Server(port);
 
 		} catch (IOException e) {
-			LOGGER.error("Could not create server. cannot start");
+			e.printStackTrace();
 			System.exit(-1);
 		}
 
@@ -191,7 +190,7 @@ public class Main {
 
 		server.start();
 		String msg = "Server running. Listening on port: " + port + " and dnid: [" + settings.getProperty("dnid") + "]";
-		LOGGER.info(msg);
+		System.out.println(msg);
 
 	}
 }
