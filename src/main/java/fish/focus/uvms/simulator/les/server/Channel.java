@@ -13,9 +13,9 @@ import java.util.StringTokenizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Client implements Runnable {
+public class Channel implements Runnable {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Channel.class);
 
 	private Socket socket = null;
 	private Server server = null;
@@ -29,7 +29,7 @@ public class Client implements Runnable {
 		return socket;
 	}
 
-	public Client(final Socket socket, final Server server) throws IOException {
+	public Channel(final Socket socket, final Server server) throws IOException {
 		this.socket = socket;
 		this.server = server;
 		try {
