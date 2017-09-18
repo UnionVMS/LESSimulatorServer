@@ -3,7 +3,8 @@ package fish.focus.uvms.simulator.les.server;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Client implements Runnable {
-
+	
 	private static final Logger LOGGER = LoggerFactory.getLogger(Client.class);
 
 	private Socket socket = null;
@@ -95,7 +96,7 @@ public class Client implements Runnable {
 				String pwd = readLine(in);
 				isAuthenticated = autenticate(user, pwd);
 			}
-			if(!isAuthenticated) {
+			if (!isAuthenticated) {
 				return;
 			}
 			write(out, ">");
@@ -124,6 +125,7 @@ public class Client implements Runnable {
 				}
 				write(out, response);
 				write(out, Command.END);
+				write(out, ">");
 				out.flush();
 				if (response.keepalive() == false) {
 					break;
@@ -135,19 +137,29 @@ public class Client implements Runnable {
 			return;
 		} finally {
 			try {
-				in.close();
+				if (in != null) {
+					in.close();
+				}
 			} catch (IOException e) {
-
+				LOGGER.info(e.toString(), e);
 			}
 			try {
-				out.close();
-			} catch (IOException e1) {
+				if (out != null) {
+					out.close();
+				}
+			} catch (IOException e) {
+				LOGGER.info(e.toString(), e);
 			}
 			try {
-				socket.close();
+				if (socket != null) {
+					socket.close();
+				}
 			} catch (IOException e) {
-
+				LOGGER.info(e.toString(), e);
 			}
 		}
 	}
+
+	
+
 }

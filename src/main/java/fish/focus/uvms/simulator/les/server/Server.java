@@ -1,10 +1,6 @@
 package fish.focus.uvms.simulator.les.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -72,7 +68,7 @@ public class Server implements Runnable {
 			socket = new ServerSocket(port, backlog, bind);
 			socket.setSoTimeout(getTimeout());
 		} catch (IOException e) {
-			LOGGER.equals("Could not get a server socket. Server will not start");
+			LOGGER.error("Could not get a server socket. Server will not start");
 			LOGGER.error(e.toString(), e);
 			stop();
 		}

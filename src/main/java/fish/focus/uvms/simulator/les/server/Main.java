@@ -15,6 +15,9 @@ public class Main {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
+	private static Properties settings;
+	private static Object lock = new Object();
+
 	/**
 	 * accessible from all modules that needs it OBS reads from file since it is
 	 * immutable
@@ -23,7 +26,9 @@ public class Main {
 	 * @throws IOException
 	 */
 	public static Properties getSettings() throws IOException {
-		return loadProperties();
+		synchronized (lock) {
+			return settings;
+		}
 	}
 
 	/**
@@ -31,7 +36,7 @@ public class Main {
 	 * 
 	 * @throws IOException
 	 */
-	private static Properties loadProperties() throws IOException {
+	private static void loadProperties() throws IOException {
 
 		Properties properties = new Properties();
 		InputStream is = Main.class.getClassLoader().getResourceAsStream("settings.properties");
@@ -40,8 +45,9 @@ public class Main {
 		}
 		properties.load(is);
 		is.close();
-
-		return properties;
+		synchronized (lock) {
+			settings = properties;
+		}
 	}
 
 	/**
@@ -66,9 +72,8 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 
-		Properties settings = null;
 		try {
-			settings = loadProperties();
+			loadProperties();
 		} catch (IOException e) {
 			LOGGER.error("settings.properties not found. cannot start");
 			System.exit(-1);
@@ -130,10 +135,10 @@ public class Main {
 					if (pollHandler.verify()) {
 						return pollHandler.execute();
 					} else {
-						return new Response("POLL request not OK >");
+						return new Response("POLL request not OK");
 					}
 				} else
-					return new Response("No arguments passed in POLL command >");
+					return new Response("No arguments passed in POLL command");
 			}
 
 		});
@@ -146,10 +151,10 @@ public class Main {
 					if (dnidHandler.verify()) {
 						return dnidHandler.execute();
 					} else {
-						return new Response("DNID request not OK >");
+						return new Response("DNID request not OK");
 					}
 				} else
-					return new Response("No arguments passed in DNID command >");
+					return new Response("No arguments passed in DNID command");
 			}
 
 		});
@@ -165,8 +170,7 @@ public class Main {
 
 		server.start();
 		String msg = "Server running. Listening on port: " + port + " and dnid: [" + settings.getProperty("dnid") + "]";
-		System.out.println(msg);
+		LOGGER.info(msg);
 
 	}
-
 }
