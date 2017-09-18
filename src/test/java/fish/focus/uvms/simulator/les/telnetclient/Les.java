@@ -89,15 +89,15 @@ public final class Les {
 
 			CommandDownLoad commandDownload = new CommandDownLoad();
 
-			String dnid = "1234";
+			String queryFor = "DNID 10745";
 
 			InputStream in = c.getInputStream();
 			PrintStream out = new PrintStream(c.getOutputStream());
 			long s = System.currentTimeMillis();
-			File resultFile = new File("downloads/" + s + "_" + dnid + "_DNID.fil");
+			File resultFile = new File("downloads/" + s +  "_DNID.fil");
 			FileOutputStream stream = new FileOutputStream(resultFile);
 
-			String reponse = commandDownload.sendDownloadCommand(out, in, stream, dnid, host, String.valueOf(port));
+			String reponse = commandDownload.sendDownloadCommand(out, in, stream, queryFor, host, String.valueOf(port));
 
 			System.out.println(response);
 			if (stream != null) {
