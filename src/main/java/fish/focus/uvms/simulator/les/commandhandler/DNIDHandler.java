@@ -176,7 +176,12 @@ public class DNIDHandler {
 				}
 			}
 		}
-		return new Response(returnValues);
+		
+		String returnLine1 = "DNID " + dnid + " " + area + END;
+		String returnLine2 = "Retrieving DNID data..." + END;
+		
+		
+		return new Response(returnLine1 + returnLine2 + returnValues);
 
 	}
 
