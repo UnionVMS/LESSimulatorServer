@@ -36,11 +36,11 @@ public class DNIDHandler {
 		if (parts.length < 2) {
 			return false;
 		}
-		if (parts.length >= 2) {
-			dnid = parts[1];
+		if (parts.length >= 1) {
+			dnid = parts[0];
 		}
-		if (parts.length >= 3) {
-			area = parts[2];
+		if (parts.length >= 2) {
+			area = parts[1];
 		} else {
 			area = "1";
 
