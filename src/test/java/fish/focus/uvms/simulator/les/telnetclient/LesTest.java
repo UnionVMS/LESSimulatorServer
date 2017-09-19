@@ -15,7 +15,7 @@ import org.junit.Test;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollType;
 import fish.focus.uvms.simulator.les.TelnetException;
 
-public final class Les {
+public final class LesTest {
 
 	private static String host;
 	private static int port;
@@ -89,7 +89,7 @@ public final class Les {
 
 			CommandDownLoad commandDownload = new CommandDownLoad();
 
-			String queryFor = "DNID 10745";
+			String queryFor = "10745";
 
 			InputStream in = c.getInputStream();
 			PrintStream out = new PrintStream(c.getOutputStream());

@@ -3,10 +3,8 @@ package fish.focus.uvms.simulator.les.commandhandler;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,9 +85,8 @@ public class DNIDHandler {
 			List<String> theFile = new ArrayList<>();
 			BufferedReader br = null;
 			try {
-				
-				br = new BufferedReader(new InputStreamReader(
-					    new FileInputStream(fileName), "UTF-8"));
+
+				br = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "UTF-8"));
 				String currentLine;
 				while ((currentLine = br.readLine()) != null) {
 					theFile.add(currentLine);
@@ -105,16 +102,10 @@ public class DNIDHandler {
 			// and close the stream
 
 			/*
-			try {
-				byte[] data = Files.readAllBytes(file.toPath());
-				System.out.println();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			*/
-			
-			
+			 * try { byte[] data = Files.readAllBytes(file.toPath());
+			 * System.out.println(); } catch (IOException e) { // TODO
+			 * Auto-generated catch block e.printStackTrace(); }
+			 */
 
 			// at least 3 lines header data 1 . . . . n and end line
 			if (theFile.size() < 3)
@@ -161,11 +152,10 @@ public class DNIDHandler {
 				}
 			}
 		}
-		
+
 		String returnLine1 = "DNID " + dnid + " " + area + END;
 		String returnLine2 = "Retrieving DNID data..." + END;
-		
-		
+
 		return new Response(returnLine1 + returnLine2 + returnValues);
 
 	}

@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import org.slf4j.Logger;
@@ -64,7 +62,7 @@ public class Channel implements Runnable {
 		return command;
 	}
 
-	private String getArguments(StringTokenizer st) {
+	private String getArguments(String command, StringTokenizer st) {
 
 		String ret = "";
 
@@ -131,7 +129,7 @@ public class Channel implements Runnable {
 					String command = getCommand(st);
 					command = command.toLowerCase();
 					if (this.getServer().getCommands().containsKey(command)) {
-						String arguments = getArguments(st);
+						String arguments = getArguments(command, st);
 						Command commandHandler = this.getServer().getCommands().get(command);
 						response = commandHandler.handle(arguments);
 					} else {
