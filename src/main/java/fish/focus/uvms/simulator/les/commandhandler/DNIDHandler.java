@@ -24,34 +24,23 @@ public class DNIDHandler {
 	private String dnid;
 	private String area;
 	String dnidRoot = null;
-	List<String> arguments;
-	String flattenedArgument;
+	String arguments;
 
-	public DNIDHandler(List<String> arguments) {
+	public DNIDHandler(String arguments) {
 		this.arguments = arguments;
 	}
 
 	private boolean parseArguments() {
 
-		String arg = "";
-		for (String tmp : arguments) {
-			if (tmp.equalsIgnoreCase("dnid")) {
-				continue;
-			}
-			arg += tmp.trim();
-			arg += " ";
-		}
-		arg = arg.trim();
-
-		String parts[] = arg.split(" ");
-		if (parts.length < 1) {
+		String parts[] = arguments.split(" ");
+		if (parts.length < 2) {
 			return false;
 		}
-		if (parts.length >= 1) {
-			dnid = parts[0];
-		}
 		if (parts.length >= 2) {
-			area = parts[1];
+			dnid = parts[1];
+		}
+		if (parts.length >= 3) {
+			area = parts[2];
 		} else {
 			area = "1";
 
@@ -61,10 +50,6 @@ public class DNIDHandler {
 
 	public boolean verify() {
 
-		if (arguments == null || arguments.size() < 2) {
-			LOGGER.error("arguments is null. Cannot do anything meaningsful");
-			return false;
-		}
 		if (!parseArguments()) {
 			LOGGER.error("arguments not ok . Check your call");
 			return false;

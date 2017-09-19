@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Channel implements Runnable {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(Channel.class);
 
 	private Socket socket = null;
@@ -57,6 +57,27 @@ public class Channel implements Runnable {
 			}
 		}
 		return "";
+	}
+
+	private String getCommand(StringTokenizer st) {
+		String command = st.nextToken();
+		return command;
+	}
+
+	private String getArguments(StringTokenizer st) {
+
+		String ret = "";
+
+		int n = st.countTokens();
+		if (n >= 1) {
+			while (st.hasMoreTokens()) {
+				String tok = st.nextToken().trim();
+				ret += tok;
+				ret += " ";
+			}
+			ret = ret.trim();
+		}
+		return ret;
 	}
 
 	// TODO make this correct later
@@ -107,16 +128,10 @@ public class Channel implements Runnable {
 					response.set(Command.ERROR);
 				} else {
 					StringTokenizer st = new StringTokenizer(line);
-					String command = st.nextToken();
+					String command = getCommand(st);
 					command = command.toLowerCase();
 					if (this.getServer().getCommands().containsKey(command)) {
-						int n = st.countTokens();
-						List<String> arguments = new ArrayList<>();
-						if (n >= 1) {
-							while (st.hasMoreTokens()) {
-								arguments.add(st.nextToken());
-							}
-						}
+						String arguments = getArguments(st);
 						Command commandHandler = this.getServer().getCommands().get(command);
 						response = commandHandler.handle(arguments);
 					} else {
@@ -159,7 +174,5 @@ public class Channel implements Runnable {
 			}
 		}
 	}
-
-	
 
 }

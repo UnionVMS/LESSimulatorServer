@@ -147,8 +147,8 @@ public class Main {
 		// ADD handlers when needed
 		server.registerCommand(new Command("POLL") {
 			@Override
-			public Response handle(List<String> arguments) {
-				if (arguments.size() > 0) {
+			public Response handle(String arguments) {
+				if (arguments.length() > 0) {
 					POLLHandler pollHandler = new POLLHandler(arguments);
 					if (pollHandler.verify()) {
 						return pollHandler.execute();
@@ -164,8 +164,8 @@ public class Main {
 
 		server.registerCommand(new Command("DNID") {
 			@Override
-			public Response handle(List<String> arguments) {
-				if (arguments.size() > 0) {
+			public Response handle(String arguments) {
+				if (arguments.length() > 0) {
 					DNIDHandler dnidHandler = new DNIDHandler(arguments);
 					if (dnidHandler.verify()) {
 						return dnidHandler.execute();
@@ -182,7 +182,7 @@ public class Main {
 		server.registerCommand(new Command("quit") {
 
 			@Override
-			public Response handle(List<String> arguments) {
+			public Response handle(String arguments) {
 				return new Response("bye", false);
 			}
 

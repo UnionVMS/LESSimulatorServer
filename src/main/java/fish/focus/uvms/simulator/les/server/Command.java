@@ -1,8 +1,7 @@
 package fish.focus.uvms.simulator.les.server;
 
-import java.util.List;
-
-/** base class for command handlers just implement handle
+/**
+ * base class for command handlers just implement handle
  *
  */
 public abstract class Command {
@@ -21,6 +20,6 @@ public abstract class Command {
 		return this.cmd;
 	}
 
-	public abstract Response handle(List<String> arguments);
+	public abstract Response handle(String arguments);
 
 }
