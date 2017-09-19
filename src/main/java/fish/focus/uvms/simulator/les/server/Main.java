@@ -3,7 +3,6 @@ package fish.focus.uvms.simulator.les.server;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
@@ -16,6 +15,7 @@ import org.apache.commons.cli.ParseException;
 
 import fish.focus.uvms.simulator.les.commandhandler.DNIDHandler;
 import fish.focus.uvms.simulator.les.commandhandler.POLLHandler;
+import fish.focus.uvms.simulator.les.common.msgdecodingsupport.DecodeHandler;
 
 public class Main {
 
@@ -178,6 +178,27 @@ public class Main {
 			}
 
 		});
+		
+		
+		server.registerCommand(new Command("DECODE") {
+			@Override
+			public Response handle(String arguments) {
+				if (arguments.length() > 0) {
+					DecodeHandler dnidHandler = new DecodeHandler(arguments);
+					if (dnidHandler.verify()) {
+						return dnidHandler.execute();
+					} else {
+						return new Response("DECODE request not OK");
+					}
+				} else {
+					return new Response("No arguments passed in DECODE command");
+				}
+			}
+
+		});
+
+
+		
 
 		server.registerCommand(new Command("quit") {
 

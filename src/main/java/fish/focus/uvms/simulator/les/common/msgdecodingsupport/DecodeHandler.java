@@ -13,10 +13,10 @@ import java.util.Arrays;
 import java.util.Vector;
 
 
-public class DNIDHandler2 {
+public class DecodeHandler {
 
 	public static final String END = "\r\n";
-	private static final Logger LOG = LoggerFactory.getLogger(DNIDHandler2.class);
+	private static final Logger LOG = LoggerFactory.getLogger(DecodeHandler.class);
 
 	private final byte[] BYTE_PATTERN = { 1, 84, 38, 84 };
 	private int PATTERN_LENGTH;
@@ -26,7 +26,7 @@ public class DNIDHandler2 {
 	String dnidRoot = null;
 	String arguments;
 
-	public DNIDHandler2(String arguments) {
+	public DecodeHandler(String arguments) {
 		this.arguments = arguments;
 	}
 
