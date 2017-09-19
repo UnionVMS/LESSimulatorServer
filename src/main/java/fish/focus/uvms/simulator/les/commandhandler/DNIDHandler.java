@@ -136,7 +136,7 @@ public class DNIDHandler {
 					firstLine = false;
 					continue;
 				}
-				// check if line with human crap readable stuff
+				// check if line with human readable stuff
 				if (lineInFile.startsWith("Retrieving")) {
 					continue;
 				}
