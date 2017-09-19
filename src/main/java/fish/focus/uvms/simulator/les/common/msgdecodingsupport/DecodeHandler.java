@@ -12,7 +12,6 @@ import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Vector;
 
-
 public class DecodeHandler {
 
 	public static final String END = "\r\n";
@@ -82,7 +81,7 @@ public class DecodeHandler {
 
 		// for every file in the catalog
 
-		 InmarsatMessageImpl[]  fileMessages = null;
+		InmarsatMessageImpl[] fileMessages = null;
 
 		for (File file : dnidFiles) {
 
@@ -117,15 +116,15 @@ public class DecodeHandler {
 						&& fileBytes[i + 2] == BYTE_PATTERN[2] && fileBytes[i + 3] == BYTE_PATTERN[3]) {
 
 					// For debug
-					/*
-					 * byte[] report = Arrays.copyOfRange(fileBytes, i, i+42);
-					 * for (int J = 0; J < report.length; J++) { int num =
-					 * Integer.parseInt(String.format("%02X ",
-					 * report[J]).trim(), 16); String tmp =
-					 * Integer.toBinaryString(num); LOG.debug(J + "\t" +
-					 * report[J] + "\t" + String.format("%02X ", report[J])+"\t"
-					 * + String.format("%8s", tmp).replace(' ', '0')); }
-					 */
+
+					byte[] report = Arrays.copyOfRange(fileBytes, i, i + 42);
+					for (int J = 0; J < report.length; J++) {
+						int num = Integer.parseInt(String.format("%02X ", report[J]).trim(), 16);
+						String tmp = Integer.toBinaryString(num);
+						LOG.debug(J + "\t" + report[J] + "\t" + String.format("%02X ", report[J]) + "\t"
+								+ String.format("%8s", tmp).replace(' ', '0'));
+					}
+
 					InmarsatMessageImpl iMes;
 					iMes = new InmarsatMessageImpl(Arrays.copyOfRange(fileBytes, i, fileBytes.length));
 

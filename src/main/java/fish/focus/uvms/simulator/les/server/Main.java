@@ -184,9 +184,9 @@ public class Main {
 			@Override
 			public Response handle(String arguments) {
 				if (arguments.length() > 0) {
-					DecodeHandler dnidHandler = new DecodeHandler(arguments);
-					if (dnidHandler.verify()) {
-						return dnidHandler.execute();
+					DecodeHandler decodeHandler = new DecodeHandler(arguments);
+					if (decodeHandler.verify()) {
+						return decodeHandler.execute();
 					} else {
 						return new Response("DECODE request not OK");
 					}

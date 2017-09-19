@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollType;
 import fish.focus.uvms.simulator.les.TelnetException;
+import fish.focus.uvms.simulator.les.common.msgdecodingsupport.DecodeHandler;
 
 public final class LesTest {
 
@@ -111,5 +112,43 @@ public final class LesTest {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	@Test
+	public void testDECODE() throws TelnetException {
+		try (TelnetSession c = new TelnetSession(host, port)) {
+			c.waitFor("name:");
+			c.println(username);
+			c.waitFor("word");
+			c.println(password);
+			String response = c.response();
+			if (!response.equals(">")) {
+				System.out.println(response);
+			}
+
+			CommandDecode commandDecode = new CommandDecode();
+
+			String queryFor = "10745";
+
+			InputStream in = c.getInputStream();
+			PrintStream out = new PrintStream(c.getOutputStream());
+			long s = System.currentTimeMillis();
+			File resultFile = new File("downloads/" + s +  "_DNID.fil");
+			FileOutputStream stream = new FileOutputStream(resultFile);
+
+			String reponse = commandDecode.decode(out, in, stream, queryFor, host, String.valueOf(port));
+
+			System.out.println(response);
+			if (stream != null) {
+				stream.flush();
+				stream.close();
+			}
+
+			c.println("quit");
+			c.waitFor("bye");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 
 }
