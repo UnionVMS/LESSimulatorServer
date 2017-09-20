@@ -5,16 +5,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Calendar;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Date;
-import java.util.UUID;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollType;
 import fish.focus.uvms.simulator.les.TelnetException;
-import fish.focus.uvms.simulator.les.common.msgdecodingsupport.DecodeHandler;
 
 public final class LesTest {
 
@@ -22,6 +21,7 @@ public final class LesTest {
 	private static int port;
 	private static String username;
 	private static String password;
+
 
 	@BeforeClass
 	public static void beforeClass() {
@@ -95,7 +95,7 @@ public final class LesTest {
 			InputStream in = c.getInputStream();
 			PrintStream out = new PrintStream(c.getOutputStream());
 			long s = System.currentTimeMillis();
-			File resultFile = new File("downloads/" + s +  "_DNID.fil");
+			File resultFile = new File("downloads/" + s + "_DNID.fil");
 			FileOutputStream stream = new FileOutputStream(resultFile);
 
 			String reponse = commandDownload.sendDownloadCommand(out, in, stream, queryFor, host, String.valueOf(port));
@@ -112,7 +112,7 @@ public final class LesTest {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	@Test
 	public void testDECODE() throws TelnetException {
 		try (TelnetSession c = new TelnetSession(host, port)) {
@@ -132,7 +132,7 @@ public final class LesTest {
 			InputStream in = c.getInputStream();
 			PrintStream out = new PrintStream(c.getOutputStream());
 			long s = System.currentTimeMillis();
-			File resultFile = new File("downloads/" + s +  "_DNID.fil");
+			File resultFile = new File("downloads/" + s + "_DNID.fil");
 			FileOutputStream stream = new FileOutputStream(resultFile);
 
 			String reponse = commandDecode.decode(out, in, stream, queryFor, host, String.valueOf(port));
@@ -149,6 +149,5 @@ public final class LesTest {
 			throw new RuntimeException(e);
 		}
 	}
-
 
 }

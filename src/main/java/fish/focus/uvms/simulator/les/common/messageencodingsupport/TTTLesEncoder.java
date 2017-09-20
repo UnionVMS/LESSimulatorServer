@@ -1,17 +1,33 @@
 package fish.focus.uvms.simulator.les.common.messageencodingsupport;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Date;
+
 public class TTTLesEncoder {
 
-	public byte[] createHeaderTest(byte headerType, String refNumberStr, byte dataPresentation, byte satelliteId,
-			String messageLengthStr, String storedTimeStr, String dnidStr, byte memberId) {
+	private byte[] int2ByteArray(int myInteger) {
+		return ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(myInteger).array();
+	}
 
-		byte[] h = new byte[22];
+	private byte[] date2BA(Date aDate) {
+		byte[] arr = new byte[4];
+		Long l = aDate.getTime() / 1000;
+		byte[] wrk = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(l).array();
+
+		arr[0] = wrk[0];
+		arr[1] = wrk[1];
+		arr[2] = wrk[2];
+		arr[3] = wrk[3];
+		return arr;
+	}
+
+	public byte[] createHeader(int headerType, int refNumber, int dataPresentation, int satelliteId, int messageLength,
+			Date storedTime, int dnid, int memberId) {
+
+		byte[] h = new byte[23];
 
 		byte headerLength = 22;
-		byte[] refNumber = refNumberStr.getBytes();
-		byte[] messageLength = messageLengthStr.getBytes();
-		byte[] storedTime = storedTimeStr.getBytes();
-		byte[] dnid = dnidStr.getBytes();
 
 		byte DOT = 1;
 		byte T = 84;
@@ -24,30 +40,41 @@ public class TTTLesEncoder {
 		h[3] = T;
 		h[21] = END;
 
-		h[4] = headerType;
+		byte[] headerType_BA = int2ByteArray(headerType);
+		h[4] = headerType_BA[0];
+
 		h[5] = headerLength;
 
-		h[6] = refNumber[0];
-		h[7] = refNumber[1];
-		h[8] = refNumber[2];
-		h[9] = refNumber[3];
+		byte[] refNumber_BA = int2ByteArray(refNumber);
+		h[6] = refNumber_BA[0];
+		h[7] = refNumber_BA[1];
+		h[8] = refNumber_BA[2];
+		h[9] = refNumber_BA[3];
 
-		h[10] = dataPresentation;
+		byte[] dataPresentation_BA = int2ByteArray(dataPresentation);
+		h[10] = dataPresentation_BA[0];
 
-		h[11] = satelliteId;
+		int satIdHex = Integer.valueOf(String.valueOf(satelliteId), 16);
+		byte[] satelliteId_BA = int2ByteArray(satIdHex);
+		h[11] = satelliteId_BA[0];
 
-		h[12] = messageLength[0];
-		h[13] = messageLength[1];
+		byte[] messageLength_BA = int2ByteArray(messageLength);
+		h[12] = messageLength_BA[0];
+		h[13] = messageLength_BA[1];
 
-		h[14] = storedTime[0];
-		h[15] = storedTime[1];
-		h[16] = storedTime[2];
-		h[17] = storedTime[3];
+		byte[] storedTime_BA = date2BA(storedTime);
+		h[14] = storedTime_BA[0];
+		h[15] = storedTime_BA[1];
+		h[16] = storedTime_BA[2];
+		h[17] = storedTime_BA[3];
 
-		h[18] = dnid[0];
-		h[19] = dnid[1];
+		byte[] dnid_BA = int2ByteArray(dnid);
+		h[18] = dnid_BA[0];
+		h[19] = dnid_BA[1];
 
-		h[20] = memberId;
+		byte[] memberId_BA = int2ByteArray(memberId);
+
+		h[20] = memberId_BA[0];
 
 		return h;
 
