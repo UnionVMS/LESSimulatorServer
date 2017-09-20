@@ -1,5 +1,7 @@
 package fish.focus.uvms.simulator.les.server;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * base class for command handlers just implement handle
  *
@@ -20,6 +22,7 @@ public abstract class Command {
 		return this.cmd;
 	}
 
-	public abstract Response handle(String arguments);
+	public abstract Response handle(String arguments) throws UnsupportedEncodingException;
+
 
 }

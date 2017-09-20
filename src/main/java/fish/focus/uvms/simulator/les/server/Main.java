@@ -3,6 +3,7 @@ package fish.focus.uvms.simulator.les.server;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
@@ -147,16 +148,16 @@ public class Main {
 		// ADD handlers when needed
 		server.registerCommand(new Command("POLL") {
 			@Override
-			public Response handle(String arguments) {
+			public Response handle(String arguments) throws UnsupportedEncodingException {
 				if (arguments.length() > 0) {
 					POLLHandler pollHandler = new POLLHandler(arguments);
 					if (pollHandler.verify()) {
 						return pollHandler.execute();
 					} else {
-						return new Response("POLL request not OK");
+						return new Response("POLL request not OK".getBytes("UTF-8"));
 					}
 				} else {
-					return new Response("No arguments passed in POLL command");
+					return new Response("No arguments passed in POLL command".getBytes("UTF-8"));
 				}
 			}
 
@@ -164,47 +165,43 @@ public class Main {
 
 		server.registerCommand(new Command("DNID") {
 			@Override
-			public Response handle(String arguments) {
+			public Response handle(String arguments) throws UnsupportedEncodingException {
 				if (arguments.length() > 0) {
 					DNIDHandler dnidHandler = new DNIDHandler(arguments);
 					if (dnidHandler.verify()) {
 						return dnidHandler.execute();
 					} else {
-						return new Response("DNID request not OK");
+						return new Response("DNID request not OK".getBytes("UTF-8"));
 					}
 				} else {
-					return new Response("No arguments passed in DNID command");
+					return new Response("No arguments passed in DNID command".getBytes("UTF-8"));
 				}
 			}
 
 		});
-		
-		
+
 		server.registerCommand(new Command("DECODE") {
 			@Override
-			public Response handle(String arguments) {
+			public Response handle(String arguments) throws UnsupportedEncodingException {
 				if (arguments.length() > 0) {
 					DecodeHandler decodeHandler = new DecodeHandler(arguments);
 					if (decodeHandler.verify()) {
 						return decodeHandler.execute();
 					} else {
-						return new Response("DECODE request not OK");
+						return new Response("DECODE request not OK".getBytes("UTF-8"));
 					}
 				} else {
-					return new Response("No arguments passed in DECODE command");
+					return new Response("No arguments passed in DECODE command".getBytes("UTF-8"));
 				}
 			}
 
 		});
 
-
-		
-
 		server.registerCommand(new Command("quit") {
 
 			@Override
-			public Response handle(String arguments) {
-				return new Response("bye", false);
+			public Response handle(String arguments) throws UnsupportedEncodingException {
+				return new Response("bye".getBytes("UTF-8"), false);
 			}
 
 		});
@@ -214,4 +211,5 @@ public class Main {
 		System.out.println(msg);
 
 	}
+
 }

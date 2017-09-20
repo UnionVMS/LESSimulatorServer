@@ -16,7 +16,7 @@ public class POLLHandler {
 	}
 
 	public Response execute() {
-		return new Response(arguments + " POLL");
+		return new Response((arguments + " POLL").getBytes());
 	}
 
 }

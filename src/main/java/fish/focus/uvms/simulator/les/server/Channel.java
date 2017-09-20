@@ -41,6 +41,10 @@ public class Channel implements Runnable {
 	private void write(OutputStream out, Response response) throws UnsupportedEncodingException, IOException {
 		out.write(response.toString().getBytes("UTF-8"));
 	}
+	
+	private void write(OutputStream out, byte[] response) throws UnsupportedEncodingException, IOException {
+		out.write(response);
+	}
 
 	private void write(OutputStream out, String msg) throws UnsupportedEncodingException, IOException {
 		out.write(msg.getBytes("UTF-8"));
@@ -123,7 +127,7 @@ public class Channel implements Runnable {
 			Response response = new Response();
 			while ((line = in.readLine()) != null) {
 				if (line == null || line.length() == 0) {
-					response.set(Command.ERROR);
+					response.set(Command.ERROR.getBytes());
 				} else {
 					StringTokenizer st = new StringTokenizer(line);
 					String command = getCommand(st);
@@ -133,10 +137,10 @@ public class Channel implements Runnable {
 						Command commandHandler = this.getServer().getCommands().get(command);
 						response = commandHandler.handle(arguments);
 					} else {
-						response.set(Command.UNKNOWN);
+						response.set(Command.UNKNOWN.getBytes());
 					}
 				}
-				write(out, response);
+				write(out, response.getBytes());
 				write(out, Command.END);
 				write(out, ">");
 				out.flush();
@@ -172,5 +176,7 @@ public class Channel implements Runnable {
 			}
 		}
 	}
+
+
 
 }

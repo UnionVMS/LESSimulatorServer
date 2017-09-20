@@ -1,16 +1,17 @@
 package fish.focus.uvms.simulator.les.common.msgdecodingsupport;
 
-import fish.focus.uvms.simulator.les.server.Main;
-import fish.focus.uvms.simulator.les.server.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Vector;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import fish.focus.uvms.simulator.les.server.Main;
+import fish.focus.uvms.simulator.les.server.Response;
 
 public class DecodeHandler {
 
@@ -73,7 +74,7 @@ public class DecodeHandler {
 
 		String pattern = new String(BYTE_PATTERN);
 
-		String returnValues = "";
+		byte[] returnValues = null;
 
 		File folder = new File(dnidRoot);
 
@@ -105,8 +106,13 @@ public class DecodeHandler {
 	private InmarsatMessageImpl[] byteToInmMessge(byte[] fileArray, InmarsatMessageImpl[] dirMessages) {
 		byte[] fileBytes = insertId(fileArray);
 		// byte[]fileBytes = fileArray;
+
+		String bytePatternAsString = new String(BYTE_PATTERN);
+		LOG.debug("-----------------------------------------------------------------------------------"
+				+ bytePatternAsString);
+
 		InmarsatMessageImpl[] messages = null;
-		Vector v = new Vector();
+		Vector<InmarsatMessageImpl> v = new Vector<>();
 		PATTERN_LENGTH = BYTE_PATTERN.length;
 		// Parse file content for messages
 		if (fileBytes != null && fileBytes.length > PATTERN_LENGTH) {
@@ -130,6 +136,10 @@ public class DecodeHandler {
 
 					try {
 						if (iMes.validate()) {
+
+							System.out.println(iMes.getHeader().toString());
+							System.out.println(iMes.getBody().toString());
+
 							v.add(iMes);
 						} else {
 							LOG.debug("Message rejected");

@@ -1,7 +1,7 @@
 package fish.focus.uvms.simulator.les.server;
 
 public class Response {
-	private String response = null;
+	private byte[] response = null;
 	private boolean keepalive = true;
 
 	public boolean keepalive() {
@@ -12,12 +12,12 @@ public class Response {
 		this.keepalive = keepalive;
 	}
 
-	public Response(String string, boolean keepalive) {
+	public Response(byte[] string, boolean keepalive) {
 		this.response = string;
 		this.keepalive = keepalive;
 	}
 
-	public Response(String string) {
+	public Response(byte[] string) {
 		this.response = string;
 	}
 
@@ -27,10 +27,18 @@ public class Response {
 
 	@Override
 	public String toString() {
-		return response;
+		return new String(response);
 	}
 
-	public void set(String response) {
+	public byte[] getBytes() {
+		if (response != null) {
+			return response;
+		} else {
+			return new byte[0];
+		}
+	}
+
+	public void set(byte[] response) {
 		this.response = response;
 	}
 
