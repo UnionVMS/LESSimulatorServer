@@ -1,6 +1,6 @@
 package fish.focus.uvms.simulator.les.common.messageencodingsupport;
 
-public class TandTLesEncoder {
+public class TTTLesEncoder {
 
 	public byte[] createHeaderTest(byte headerType, String refNumberStr, byte dataPresentation, byte satelliteId,
 			String messageLengthStr, String storedTimeStr, String dnidStr, byte memberId) {
