@@ -5,8 +5,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import fish.focus.uvms.simulator.les.common.messageencodingsupport.TTTLesEncoder;
 import fish.focus.uvms.simulator.les.common.msgdecodingsupport.InmarsatHeader;
+import fish.focus.uvms.simulator.les.common.msgencodingsupport.TTTLesEncoder;
 
 public class TestTTLesMessageEncoder {
 

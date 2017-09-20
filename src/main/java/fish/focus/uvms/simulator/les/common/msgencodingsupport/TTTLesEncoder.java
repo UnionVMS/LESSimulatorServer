@@ -1,4 +1,4 @@
-package fish.focus.uvms.simulator.les.common.messageencodingsupport;
+package fish.focus.uvms.simulator.les.common.msgencodingsupport;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -10,7 +10,7 @@ public class TTTLesEncoder {
 		return ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putInt(myInteger).array();
 	}
 
-	private byte[] date2BA(Date aDate) {
+	private byte[] date2ByteArray(Date aDate) {
 		byte[] arr = new byte[4];
 		Long l = aDate.getTime() / 1000;
 		byte[] wrk = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(l).array();
@@ -62,7 +62,7 @@ public class TTTLesEncoder {
 		h[12] = messageLength_BA[0];
 		h[13] = messageLength_BA[1];
 
-		byte[] storedTime_BA = date2BA(storedTime);
+		byte[] storedTime_BA = date2ByteArray(storedTime);
 		h[14] = storedTime_BA[0];
 		h[15] = storedTime_BA[1];
 		h[16] = storedTime_BA[2];
@@ -79,5 +79,17 @@ public class TTTLesEncoder {
 		return h;
 
 	}
+	
+	
+	public byte[] createBody(int headerType, int refNumber, int dataPresentation, int satelliteId, int messageLength,
+			Date storedTime, int dnid, int memberId) {
+		
+		
+		return null;
+	}
+
+	
+	
+	
 
 }
