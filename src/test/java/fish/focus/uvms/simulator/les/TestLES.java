@@ -1,4 +1,4 @@
-package fish.focus.uvms.simulator.les.telnetclient;
+package fish.focus.uvms.simulator.les;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,9 +13,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollType;
-import fish.focus.uvms.simulator.les.TelnetException;
+import fish.focus.uvms.simulator.les.telnetclient.CommandDecode;
+import fish.focus.uvms.simulator.les.telnetclient.CommandDownLoad;
+import fish.focus.uvms.simulator.les.telnetclient.CommandPoll;
+import fish.focus.uvms.simulator.les.telnetclient.TelnetSession;
 
-public final class LesTest {
+public final class TestLES {
 
 	private static String host;
 	private static int port;
