@@ -58,6 +58,36 @@ public class TestTTLesMessageEncoder {
 		Assert.assertTrue(result1 == result2);
 
 	}
+	
+	
+	
+	
+	@Test
+	public void pack(){
+		
+		// 1 - 63
+		// 100 - 163
+		// 200 - 263
+		// 300 - 363
+		
+		
+		
+		int satId = 305;
+		String all = Integer.toBinaryString(satId);
+		
+		String ocean = all.substring(0,2);
+		String id = all.substring(2);
+		
+		
+		System.out.println(ocean);
+		System.out.println(id);
+		
+		
+		
+		
+	}
+	
+	
 
 	@Test
 	public void createHeader() {
@@ -73,7 +103,7 @@ public class TestTTLesMessageEncoder {
 		int headerType = 4;
 		int refNumber = 847842;
 		int dataPresentation = 2;
-		int satId = 42; // ?????
+		int satId = 100; // ?????
 		int messageLength = 282;
 		int dnid = 10745;
 		int memberId = 4;
