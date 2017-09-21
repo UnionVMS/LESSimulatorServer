@@ -1,4 +1,4 @@
-package fish.focus.uvms.simulator.les;
+package fish.focus.uvms.simulator.les.telnetclient;
 
 public class TelnetException extends Exception {
 	private static final long serialVersionUID = 1L;

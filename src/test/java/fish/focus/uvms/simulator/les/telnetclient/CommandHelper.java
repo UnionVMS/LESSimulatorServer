@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import fish.focus.uvms.simulator.les.TelnetException;
-
 public class CommandHelper {
 
 	public void write(String value, PrintStream out) throws IOException {

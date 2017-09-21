@@ -16,6 +16,7 @@ import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollType;
 import fish.focus.uvms.simulator.les.telnetclient.CommandDecode;
 import fish.focus.uvms.simulator.les.telnetclient.CommandDownLoad;
 import fish.focus.uvms.simulator.les.telnetclient.CommandPoll;
+import fish.focus.uvms.simulator.les.telnetclient.TelnetException;
 import fish.focus.uvms.simulator.les.telnetclient.TelnetSession;
 
 public final class TestLES {

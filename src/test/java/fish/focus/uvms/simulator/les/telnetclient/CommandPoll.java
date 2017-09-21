@@ -7,9 +7,8 @@ import java.io.PrintStream;
 
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollTypeType;
-import fish.focus.uvms.simulator.les.InmarsatPoll;
-import fish.focus.uvms.simulator.les.InmarsatPoll.OceanRegion;
-import fish.focus.uvms.simulator.les.TelnetException;
+import fish.focus.uvms.simulator.les.common.msgdecodingsupport.InmarsatPoll;
+import fish.focus.uvms.simulator.les.common.msgdecodingsupport.InmarsatPoll.OceanRegion;
 
 public class CommandPoll {
 
