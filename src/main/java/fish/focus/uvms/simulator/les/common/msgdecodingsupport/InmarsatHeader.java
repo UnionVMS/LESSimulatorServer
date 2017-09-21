@@ -3,7 +3,6 @@ package fish.focus.uvms.simulator.les.common.msgdecodingsupport;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +23,6 @@ public class InmarsatHeader implements InmarsatMessage {
 	private byte[] header;
 
 	private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd 'at' HH:mm:ss");
-
 
 	public InmarsatHeader(byte[] message) {
 		setHeader(message);

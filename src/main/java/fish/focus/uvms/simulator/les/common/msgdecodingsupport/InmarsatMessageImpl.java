@@ -1,7 +1,6 @@
 package fish.focus.uvms.simulator.les.common.msgdecodingsupport;
 
 import java.util.Arrays;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,13 +28,13 @@ public class InmarsatMessageImpl implements InmarsatMessage {
 
 				// For debug
 				/*
-                byte[] report = Arrays.copyOfRange(message, 0, start+end);
-                for (int i = 0; i < report.length; i++) {
-                    int num = Integer.parseInt(String.format("%02X ", report[i]).trim(), 16);
-                    String tmp = Integer.toBinaryString(num);
-                    LOG.debug(i + "\t" + report[i] + "\t" + String.format("%02X ", report[i])+"\t" + String.format("%8s", tmp).replace(' ', '0'));
-                }
-                printReport();
+				byte[] report = Arrays.copyOfRange(message, 0, start+end);
+				for (int i = 0; i < report.length; i++) {
+				    int num = Integer.parseInt(String.format("%02X ", report[i]).trim(), 16);
+				    String tmp = Integer.toBinaryString(num);
+				    LOG.debug(i + "\t" + report[i] + "\t" + String.format("%02X ", report[i])+"\t" + String.format("%8s", tmp).replace(' ', '0'));
+				}
+				printReport();
 				 */
 			}
 

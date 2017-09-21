@@ -1,7 +1,8 @@
 package fish.focus.uvms.simulator.les.common;
 
 import java.io.File;
-/** Helper class for  file transfering
+/**
+ * Helper class for file transfering
  * 
  */
 import java.io.FileOutputStream;

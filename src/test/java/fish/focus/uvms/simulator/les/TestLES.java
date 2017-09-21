@@ -8,10 +8,8 @@ import java.io.PrintStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Date;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollType;
 import fish.focus.uvms.simulator.les.telnetclient.CommandDecode;
 import fish.focus.uvms.simulator.les.telnetclient.CommandDownLoad;
@@ -25,7 +23,6 @@ public final class TestLES {
 	private static int port;
 	private static String username;
 	private static String password;
-
 
 	@BeforeClass
 	public static void beforeClass() {

@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -13,14 +12,20 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-
 import fish.focus.uvms.simulator.les.commandhandler.DNIDHandler;
 import fish.focus.uvms.simulator.les.commandhandler.POLLHandler;
 import fish.focus.uvms.simulator.les.common.msgdecodingsupport.DecodeHandler;
+import fish.focus.uvms.simulator.les.testdata.TestDataHttpServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main {
 
-	// private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	public static final String ARG_HELP = "help";
+	public static final String ARG_DNID = "dnid";
+	public static final String ARG_PORT = "port";
+	public static final String ARG_PORT_TESTDATA = "testdata.port";
 
 	private static Properties settings;
 	private static Object lock = new Object();
@@ -94,7 +99,7 @@ public class Main {
 
 		CommandLineParser parser = new DefaultParser();
 
-		Options options = new Options();
+		Options options = buildInputArgumets();
 
 		options.addOption(Option.builder("h").longOpt("help").desc("print this message").required(false).build());
 
@@ -108,19 +113,25 @@ public class Main {
 		try {
 			CommandLine line = parser.parse(options, args);
 
-			if (line.hasOption("port")) {
-				portFromCommandLine = line.getOptionValue("port");
-			}
-
-			if (line.hasOption("dnid")) {
-				dnidFromCommandLine = line.getOptionValue("dnid");
-				settings.put("dnid", dnidFromCommandLine);
-			}
-
-			if (line.hasOption("help")) {
+			if (line.hasOption(ARG_HELP)) {
 				HelpFormatter formatter = new HelpFormatter();
 				formatter.printHelp("LesSimulator Server", options);
 				return;
+			}
+
+			if (line.hasOption(ARG_PORT)) {
+				portFromCommandLine = line.getOptionValue(ARG_PORT);
+			}
+
+			if (line.hasOption(ARG_DNID)) {
+				dnidFromCommandLine = line.getOptionValue(ARG_DNID);
+				settings.put(ARG_DNID, dnidFromCommandLine);
+			}
+			if (line.hasOption(ARG_HELP)) {
+				String portTestData = line.getOptionValue(ARG_PORT_TESTDATA);
+				if (portTestData != null) {
+					settings.put(ARG_PORT_TESTDATA, portTestData);
+				}
 			}
 
 		} catch (ParseException exp) {
@@ -207,9 +218,28 @@ public class Main {
 		});
 
 		server.start();
+		TestDataHttpServer tdServer = TestDataHttpServer.getInstance();
 		String msg = "Server running. Listening on port: " + port + " and dnid: [" + settings.getProperty("dnid") + "]";
-		System.out.println(msg);
+		LOGGER.info(msg);
 
 	}
 
+	private static Options buildInputArgumets() {
+		Options options = new Options();
+
+		options.addOption(Option.builder("h").longOpt(ARG_HELP).desc("print this message").required(false).build());
+
+		options.addOption(Option.builder("p").required(false).longOpt(ARG_PORT)
+				.desc("the telnet port for the simulator").hasArg().numberOfArgs(1).argName(ARG_PORT).build());
+
+		options.addOption(Option.builder("d").required(false).longOpt(ARG_DNID)
+				.desc("a semicolon separted list of DNIDS ex '10095,10096'").hasArg().valueSeparator(',')
+				.argName(ARG_DNID).build());
+
+		options.addOption(Option.builder("tp").required(false).longOpt(ARG_PORT_TESTDATA)
+				.desc("the http server port used for testdata'").hasArg().numberOfArgs(1).argName(ARG_PORT_TESTDATA)
+				.build());
+
+		return options;
+	}
 }

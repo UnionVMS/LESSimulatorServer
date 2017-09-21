@@ -14,8 +14,8 @@ public class CommandHelper {
 
 	public String readUntil(String pattern, InputStream in, FileOutputStream stream, String url, String port)
 			throws TelnetException, IOException {
-		String[] faultPatterns = { "????????", "[Connection to 41424344 aborted: error status 0]",
-				"Illegal address parameter." };
+		String[] faultPatterns =
+				{"????????", "[Connection to 41424344 aborted: error status 0]", "Illegal address parameter."};
 		StringBuffer stringbuffer = new StringBuffer();
 		byte[] bytebuffer = new byte[1024];
 		int bytesRead = 0;

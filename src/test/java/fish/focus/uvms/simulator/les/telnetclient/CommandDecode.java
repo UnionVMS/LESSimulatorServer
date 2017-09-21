@@ -9,8 +9,8 @@ public class CommandDecode {
 
 	private CommandHelper commandHelper = new CommandHelper();
 
-	public String decode(PrintStream out, InputStream in, FileOutputStream stream, String dnid, String url,
-			String port) throws TelnetException, IOException {
+	public String decode(PrintStream out, InputStream in, FileOutputStream stream, String dnid, String url, String port)
+			throws TelnetException, IOException {
 		String prompt = ">";
 		String cmd = "DECODE " + dnid + " 1";
 		commandHelper.write(cmd, out);

@@ -6,10 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Vector;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import fish.focus.uvms.simulator.les.server.Main;
 import fish.focus.uvms.simulator.les.server.Response;
 
@@ -18,7 +16,7 @@ public class DecodeHandler {
 	public static final String END = "\r\n";
 	private static final Logger LOG = LoggerFactory.getLogger(DecodeHandler.class);
 
-	private final byte[] BYTE_PATTERN = { 1, 84, 38, 84 };
+	private final byte[] BYTE_PATTERN = {1, 84, 38, 84};
 	private int PATTERN_LENGTH;
 
 	private String dnid;
@@ -43,7 +41,6 @@ public class DecodeHandler {
 			area = parts[1];
 		} else {
 			area = "1";
-
 		}
 		return true;
 	}
@@ -81,7 +78,6 @@ public class DecodeHandler {
 		File[] dnidFiles = folder.listFiles();
 
 		// for every file in the catalog
-
 		InmarsatMessageImpl[] fileMessages = null;
 
 		for (File file : dnidFiles) {
@@ -96,11 +92,8 @@ public class DecodeHandler {
 				System.out.println();
 			} catch (IOException e) {
 			}
-
 		}
-
 		return new Response(returnValues);
-
 	}
 
 	private InmarsatMessageImpl[] byteToInmMessge(byte[] fileArray, InmarsatMessageImpl[] dirMessages) {
@@ -122,7 +115,6 @@ public class DecodeHandler {
 						&& fileBytes[i + 2] == BYTE_PATTERN[2] && fileBytes[i + 3] == BYTE_PATTERN[3]) {
 
 					// For debug
-
 					byte[] report = Arrays.copyOfRange(fileBytes, i, i + 42);
 					for (int J = 0; J < report.length; J++) {
 						int num = Integer.parseInt(String.format("%02X ", report[J]).trim(), 16);
@@ -147,7 +139,6 @@ public class DecodeHandler {
 					} catch (Exception e) {
 						LOG.debug("InmarsatMessages failed Validation", e);
 					}
-
 				}
 			}
 		} else {
@@ -181,5 +172,4 @@ public class DecodeHandler {
 		}
 		return output_.toByteArray();
 	}
-
 }

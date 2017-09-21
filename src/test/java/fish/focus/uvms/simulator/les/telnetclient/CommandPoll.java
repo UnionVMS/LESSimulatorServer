@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollType;
 import eu.europa.ec.fisheries.schema.exchange.plugin.types.v1.PollTypeType;
 import fish.focus.uvms.simulator.les.common.msgdecodingsupport.InmarsatPoll;

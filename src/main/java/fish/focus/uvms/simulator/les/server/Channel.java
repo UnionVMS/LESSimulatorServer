@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.StringTokenizer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +40,7 @@ public class Channel implements Runnable {
 	private void write(OutputStream out, Response response) throws UnsupportedEncodingException, IOException {
 		out.write(response.toString().getBytes("UTF-8"));
 	}
-	
+
 	private void write(OutputStream out, byte[] response) throws UnsupportedEncodingException, IOException {
 		out.write(response);
 	}
@@ -176,7 +175,5 @@ public class Channel implements Runnable {
 			}
 		}
 	}
-
-
 
 }

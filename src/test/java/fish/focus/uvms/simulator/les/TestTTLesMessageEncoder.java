@@ -2,13 +2,11 @@ package fish.focus.uvms.simulator.les;
 
 import java.util.Calendar;
 import java.util.Date;
-
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import fish.focus.uvms.simulator.les.common.msgdecodingsupport.InmarsatBody;
 import fish.focus.uvms.simulator.les.common.msgdecodingsupport.InmarsatHeader;
 import fish.focus.uvms.simulator.les.common.msgencodingsupport.TTTLesEncoder;
@@ -23,8 +21,7 @@ public class TestTTLesMessageEncoder {
 		int test = 17;
 		byte aByte = (byte) test;
 
-		int result1 = Integer.MIN_VALUE;
-		;
+		int result1 = Integer.MIN_VALUE;;
 		int result2 = Integer.MIN_VALUE;
 
 		{ // dissekerad kod

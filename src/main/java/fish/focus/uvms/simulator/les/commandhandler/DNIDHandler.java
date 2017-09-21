@@ -4,10 +4,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import fish.focus.uvms.simulator.les.server.Main;
 import fish.focus.uvms.simulator.les.server.Response;
 

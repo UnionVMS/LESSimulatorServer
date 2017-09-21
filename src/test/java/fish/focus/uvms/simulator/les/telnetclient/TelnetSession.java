@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.commons.net.telnet.TelnetClient;
 
 public final class TelnetSession implements Closeable {

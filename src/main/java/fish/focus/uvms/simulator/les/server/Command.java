@@ -24,5 +24,4 @@ public abstract class Command {
 
 	public abstract Response handle(String arguments) throws UnsupportedEncodingException;
 
-
 }

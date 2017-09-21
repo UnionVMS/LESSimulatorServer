@@ -4,7 +4,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import org.apache.commons.net.telnet.EchoOptionHandler;
 import org.apache.commons.net.telnet.InvalidTelnetOptionException;
 import org.apache.commons.net.telnet.SuppressGAOptionHandler;
@@ -63,7 +62,7 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler 
 				OutputStream outstr = tc.getOutputStream();
 				outstr.flush();
 				byte[] buff = new byte[1024];
-				
+
 				int ret_read = 0;
 
 				do {
@@ -110,24 +109,24 @@ public class TelnetClientExample implements Runnable, TelnetNotificationHandler 
 	public void receivedNegotiation(int negotiation_code, int option_code) {
 		String command = null;
 		switch (negotiation_code) {
-		case TelnetNotificationHandler.RECEIVED_DO:
-			command = "DO";
-			break;
-		case TelnetNotificationHandler.RECEIVED_DONT:
-			command = "DONT";
-			break;
-		case TelnetNotificationHandler.RECEIVED_WILL:
-			command = "WILL";
-			break;
-		case TelnetNotificationHandler.RECEIVED_WONT:
-			command = "WONT";
-			break;
-		case TelnetNotificationHandler.RECEIVED_COMMAND:
-			command = "COMMAND";
-			break;
-		default:
-			command = Integer.toString(negotiation_code); // Should not happen
-			break;
+			case TelnetNotificationHandler.RECEIVED_DO:
+				command = "DO";
+				break;
+			case TelnetNotificationHandler.RECEIVED_DONT:
+				command = "DONT";
+				break;
+			case TelnetNotificationHandler.RECEIVED_WILL:
+				command = "WILL";
+				break;
+			case TelnetNotificationHandler.RECEIVED_WONT:
+				command = "WONT";
+				break;
+			case TelnetNotificationHandler.RECEIVED_COMMAND:
+				command = "COMMAND";
+				break;
+			default:
+				command = Integer.toString(negotiation_code); // Should not happen
+				break;
 		}
 		System.out.println("Received " + command + " for option code " + option_code);
 	}
