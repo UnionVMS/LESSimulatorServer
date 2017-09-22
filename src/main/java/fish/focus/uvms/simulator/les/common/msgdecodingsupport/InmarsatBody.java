@@ -23,6 +23,34 @@ public class InmarsatBody implements InmarsatMessage {
 		}
 	}
 
+
+	public int byteInHex2Int(byte theByte) {
+		return Integer.parseInt(String.format("%02X ", theByte).trim(), 16);
+	}
+
+	public String int2Binary(int theInteger) {
+		String binaryString = Integer.toBinaryString(theInteger);
+		binaryString = String.format("%8s", binaryString).replace(' ', '0');
+		return binaryString;
+	}
+
+	public int binaryStringPart2Int(String binaryString, int startPos, int endPos) {
+		return Integer.parseInt(binaryString.substring(startPos, endPos), 2);
+	}
+	
+	public int binaryStringPart2Int(String binaryString, int startPos) {
+		return Integer.parseInt(binaryString.substring(startPos), 2);
+	}
+
+	public int getDataReportFormatNEW() {
+		
+		int num = byteInHex2Int(body[0]);
+		String binaryString  = int2Binary(num);
+		return binaryStringPart2Int(binaryString, 0,2);
+	}
+
+	
+
 	public int getDataReportFormat() {
 		int num = Integer.parseInt(String.format("%02X ", body[0]).trim(), 16);
 		String s = Integer.toBinaryString(num);
