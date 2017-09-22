@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 import fish.focus.uvms.simulator.les.common.PackUnpackFunctions;
 
 public class TTTLesEncoder {
-	
+
 	private PackUnpackFunctions functions = new PackUnpackFunctions();
 
 
@@ -41,7 +41,7 @@ public class TTTLesEncoder {
 		byte[] dataPresentation_BA = functions.int2ByteArray(dataPresentation);
 		h[10] = dataPresentation_BA[0];
 
-		//h[11] = int2ByteArray(satId)[0];
+		// h[11] = int2ByteArray(satId)[0];
 		h[11] = 42;
 
 		byte[] messageLength_BA = functions.int2ByteArray(messageLength);
@@ -71,7 +71,7 @@ public class TTTLesEncoder {
 
 		byte[] b = new byte[255];
 
-		byte[] xxxxx = functions.packDataReportingFormatAndLatitude(dataReportFormat, latitude);
+		// byte[] xxxxx = functions.packDataReportingFormatAndLatitude(dataReportFormat, latitude);
 
 		b[0] = functions.int2ByteArray(dataReportFormat)[0];
 

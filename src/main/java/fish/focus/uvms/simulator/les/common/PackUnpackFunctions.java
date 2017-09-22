@@ -30,29 +30,45 @@ public class PackUnpackFunctions {
 		return ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putDouble(myDouble).array();
 	}
 
-	private byte[] packDataReportingFormatAndLatitude(int dataReportFormat, Double latitude) {
+	public byte[] float2ByteArray(float myFloat) {
+		return ByteBuffer.allocate(4).order(ByteOrder.LITTLE_ENDIAN).putFloat(myFloat).array();
+	}
 
-		/*
-		 * String s = Integer.toBinaryString(num); String s2 = String.format("%8s", s); String s3 = s2.replace(' ',
-		 * '0'); int i = Integer.parseInt(s3.substring(0, 2), 2);
-		 * 
-		 */
+	public String double2HexString(double theDouble) {
+		long doubleAsLong = Double.doubleToRawLongBits(theDouble);
+		return Long.toHexString(doubleAsLong);
+	}
 
-		String reportFormat = Integer.toBinaryString(dataReportFormat);
-		byte[] latitude_BA = double2ByteArray(latitude);
+	public String float2HexString(float theFloat) {
+		long floatAsLong = Float.floatToRawIntBits(theFloat);
+		return Long.toHexString(floatAsLong);
+	}
 
-		String byte1 = Integer.toBinaryString(latitude_BA[0]);
-		String byte2 = Integer.toBinaryString(latitude_BA[1]);
-		String byte3 = Integer.toBinaryString(latitude_BA[2]);
-		String byte4 = Integer.toBinaryString(latitude_BA[3]);
-		String byte5 = Integer.toBinaryString(latitude_BA[4]);
-		String byte6 = Integer.toBinaryString(latitude_BA[5]);
-		String byte7 = Integer.toBinaryString(latitude_BA[6]);
-		String byte8 = Integer.toBinaryString(latitude_BA[7]);
-		
+	/*
+	 * public String doubleHexString2binaryString(String doubleHexString) { long num = (Long.parseLong(doubleHexString,
+	 * 16)); return Long.toBinaryString(num); }
+	 * 
+	 * public String floatHexString2binaryString(String floatHexString) { long num = (Long.parseLong(floatHexString,
+	 * 16)); return Long.toBinaryString(num); }
+	 */
+
+	public float byteArray2Float(byte[] byteArray) {
+		return ByteBuffer.wrap(byteArray).order(ByteOrder.LITTLE_ENDIAN).getFloat();
+	}
+
+
+
+	public byte[] packLongitude2Bytes(Float latitude) {
+
+
 		return null;
+	}
 
 
+	public byte[] packDataReportingFormatAndLatitude2Bytes(int dataReportFormat, Float latitude) {
+
+
+		return null;
 	}
 
 
