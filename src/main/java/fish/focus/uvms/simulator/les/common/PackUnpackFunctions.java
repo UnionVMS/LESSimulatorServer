@@ -39,7 +39,7 @@ public class PackUnpackFunctions {
 		 */
 
 		String reportFormat = Integer.toBinaryString(dataReportFormat);
-		byte[] latitude_BA = functions.double2ByteArray(latitude);
+		byte[] latitude_BA = double2ByteArray(latitude);
 
 		String byte1 = Integer.toBinaryString(latitude_BA[0]);
 		String byte2 = Integer.toBinaryString(latitude_BA[1]);
